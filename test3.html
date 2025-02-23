@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Frame App - Camera</title>
+    <title>Photo Booth</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         #camera-container {
@@ -27,7 +27,7 @@
             width: 200px;
             height: 150px;
             object-fit: cover;
-            margin: 0; /* Removed vertical margin to make photos touch */
+            margin: 0;
             border: 10px solid transparent;
             background-size: cover;
             border-radius: 5px;
@@ -36,7 +36,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0; /* Removed gap between photos */
+            gap: 0;
         }
         .frame {
             width: 60px;
@@ -46,6 +46,7 @@
             border-radius: 5px;
             background-size: cover;
             background-position: center;
+            background-repeat: repeat;
             transition: transform 0.2s;
         }
         .frame:hover {
@@ -58,7 +59,7 @@
     </style>
 </head>
 <body class="container py-5">
-    <h2 class="text-center mb-4">Photo Frame App</h2>
+    <h2 class="text-center mb-4">PhotoBooth</h2>
     <div id="setup-container" class="text-center">
         <button class="btn btn-primary mt-3" onclick="startCamera()">Start Camera</button>
     </div>
@@ -78,22 +79,28 @@
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Frame</h4>
         <div class="d-flex justify-content-center gap-3 flex-wrap mb-3">
-            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div>
-            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div>
-            <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame('#FF69B4')"></div>
-            <div class="frame" style="background-color: #87CEEB;" onclick="selectFrame('#87CEEB')"></div>
-            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame('#FFA07A')"></div>
-            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame('#DA70D6')"></div>
-            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame('#FFC0CB')"></div>
-            <div class="frame" style="background-color: #F08080;" onclick="selectFrame('#F08080')"></div>
-            <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame('#DDA0DD')"></div>
-            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('#FFB6C1')"></div>
+            <!-- Solid Colors -->
+            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('solid', '#FF6F61')"></div>
+            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('solid', '#FFD700')"></div>
+            <!-- Heart Pattern -->
+            <div class="frame" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwIDE3LjVsLTUuMi00LjZhNC4xIDQuMSAwIDAxMC01LjggNC4xIDQuMSAwIDAxNS44IDBsNS4yIDQuNi00LjEgNC4xeiIgZmlsbD0iI2ZmMDAwMCIvPjwvc3ZnPg==');" onclick="selectFrame('pattern', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwIDE3LjVsLTUuMi00LjZhNC4xIDQuMSAwIDAxMC01LjggNC4xIDQuMSAwIDAxNS44IDBsNS4yIDQuNi00LjEgNC4xeiIgZmlsbD0iI2ZmMDAwMCIvPjwvc3ZnPg==')"></div>
+            <!-- Star Pattern -->
+            <div class="frame" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwIDE1LjVsLTQuOCAxLjIgMS4yLTQuOC00LjgtMy42IDQuOC0uOCAyLjQtNC44IDIuNCA0LjggNC44LjgtNC44IDMuNiAxLjIgNC44eiIgZmlsbD0iI2ZmYTAwMCIvPjwvc3ZnPg==');" onclick="selectFrame('pattern', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwIDE1LjVsLTQuOCAxLjIgMS4yLTQuOC00LjgtMy42IDQuOC0uOCAyLjQtNC44IDIuNCA0LjggNC44LjgtNC44IDMuNiAxLjIgNC44eiIgZmlsbD0iI2ZmYTAwMCIvPjwvc3ZnPg==')"></div>
+            <!-- Cartoon Cloud Pattern -->
+            <div class="frame" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTMwIDEwYTUgNSAwIDAxMCAxMCA1IDUgMCAwMS01IDVoLTEwYTUgNSAwIDAxLTUtNSA1IDUgMCAwMS01LTUgNSAwIDAxMC0xMCA1IDUgMCAwMTUgMCA1IDUgMCAwMTUgNXoiIGZpbGw9IiM4N0NFQkYiLz48L3N2Zz4=');" onclick="selectFrame('pattern', 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTMwIDEwYTUgNSAwIDAxMCAxMCA1IDUgMCAwMS01IDVoLTEwYTUgNSAwIDAxLTUtNSA1IDUgMCAwMS01LTUgNSAwIDAxMC0xMCA1IDUgMCAwMTUgMCA1IDUgMCAwMTUgNXoiIGZpbGw9IiM4N0NFQkYiLz48L3N2Zz4=')"></div>
+            <!-- More Solid Colors -->
+            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame('solid', '#FFA07A')"></div>
+            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame('DA70D6', '#DA70D6')"></div>
+            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame('solid', '#FFC0CB')"></div>
+            <div class="frame" style="background-color: #F08080;" onclick="selectFrame('solid', '#F08080')"></div>
+            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('solid', '#FFB6C1')"></div>
         </div>
         <button class="btn btn-success mt-3" onclick="downloadPhotos()">Save Photos</button>
     </div>
 
     <script>
-        let selectedFrame = '';
+        let selectedFrameType = '';
+        let selectedFrameValue = '';
         const photoCount = 4;
         let videoStream = null;
         let isCapturing = false;
@@ -172,8 +179,12 @@
                 const img = document.createElement('img');
                 img.src = canvas.toDataURL('image/png');
                 img.classList.add('photo-frame');
-                if (selectedFrame) {
-                    img.style.border = `10px solid ${selectedFrame}`;
+                if (selectedFrameType === 'solid') {
+                    img.style.border = `10px solid ${selectedFrameValue}`;
+                } else if (selectedFrameType === 'pattern') {
+                    img.style.border = `10px solid transparent`;
+                    img.style.backgroundImage = `url(${selectedFrameValue})`;
+                    img.style.backgroundRepeat = 'repeat';
                 }
                 photoContainer.appendChild(img);
             }
@@ -181,12 +192,21 @@
             document.getElementById('frame-selection').style.display = 'block';
         }
 
-        function selectFrame(frameColor) {
-            selectedFrame = frameColor;
+        function selectFrame(type, value) {
+            selectedFrameType = type;
+            selectedFrameValue = value;
             document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
+
             document.querySelectorAll('.photo-frame').forEach(img => {
-                img.style.border = `10px solid ${selectedFrame}`;
+                if (type === 'solid') {
+                    img.style.border = `10px solid ${value}`;
+                    img.style.backgroundImage = 'none';
+                } else if (type === 'pattern') {
+                    img.style.border = `10px solid transparent`;
+                    img.style.backgroundImage = `url(${value})`;
+                    img.style.backgroundRepeat = 'repeat';
+                }
             });
         }
 
@@ -214,13 +234,33 @@
                 image.onload = () => {
                     ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
 
-                    if (selectedFrame) {
-                        ctx.strokeStyle = selectedFrame;
-                        ctx.lineWidth = frameThickness * 2;
-                        ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
+                    if (selectedFrameType && selectedFrameValue) {
+                        if (selectedFrameType === 'solid') {
+                            ctx.strokeStyle = selectedFrameValue;
+                            ctx.lineWidth = frameThickness * 2;
+                            ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
+                        } else if (selectedFrameType === 'pattern') {
+                            const patternImg = new Image();
+                            patternImg.src = selectedFrameValue;
+                            patternImg.onload = () => {
+                                const pattern = ctx.createPattern(patternImg, 'repeat');
+                                ctx.strokeStyle = pattern;
+                                ctx.lineWidth = frameThickness * 2;
+                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
+                            };
+                        }
                     }
 
-                    if (index === images.length - 1 && selectedFrame) {
+                    if (index === images.length - 1 && selectedFrameType) {
+                        if (selectedFrameType === 'solid') {
+                            ctx.strokeStyle = selectedFrameValue;
+                        } else if (selectedFrameType === 'pattern') {
+                            const patternImg = new Image();
+                            patternImg.src = selectedFrameValue;
+                            patternImg.onload = () => {
+                                ctx.strokeStyle = ctx.createPattern(patternImg, 'repeat');
+                            };
+                        }
                         ctx.lineWidth = frameThickness * 2;
                         ctx.beginPath();
                         ctx.moveTo(0, 0);

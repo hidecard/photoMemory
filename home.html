@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Frame App - Camera</title>
+    <title>Photo Booth</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         #camera-container {
@@ -19,7 +19,7 @@
             font-size: 2rem;
             font-weight: bold;
             color: red;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.5);
             padding: 10px;
             border-radius: 5px;
         }
@@ -27,16 +27,16 @@
             width: 200px;
             height: 150px;
             object-fit: cover;
-            margin: 10px;
+            margin: 0;
             border: 10px solid transparent;
             background-size: cover;
             border-radius: 5px;
         }
         #photo-container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
         }
         .frame {
             width: 60px;
@@ -58,7 +58,7 @@
     </style>
 </head>
 <body class="container py-5">
-    <h2 class="text-center mb-4">Photo Frame App</h2>
+    <h2 class="text-center mb-4">PhotoBooth</h2>
     <div id="setup-container" class="text-center">
         <button class="btn btn-primary mt-3" onclick="startCamera()">Start Camera</button>
     </div>
@@ -201,8 +201,8 @@
             const ctx = canvas.getContext('2d');
             const imgWidth = 200;
             const imgHeight = 150;
-            const frameThickness = 10; // Top, left, right, and between photos
-            const bottomFrameThickness = 30; // Thicker bottom frame
+            const frameThickness = 10;
+            const bottomFrameThickness = 30;
             canvas.width = imgWidth + (frameThickness * 2);
             canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness - frameThickness;
 
@@ -217,29 +217,23 @@
                     if (selectedFrame) {
                         ctx.strokeStyle = selectedFrame;
                         ctx.lineWidth = frameThickness * 2;
-                        // Draw frame around each photo
                         ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
                     }
 
                     if (index === images.length - 1 && selectedFrame) {
-                        // Draw outer frame
                         ctx.lineWidth = frameThickness * 2;
-                        // Top
                         ctx.beginPath();
                         ctx.moveTo(0, 0);
                         ctx.lineTo(canvas.width, 0);
                         ctx.stroke();
-                        // Left
                         ctx.beginPath();
                         ctx.moveTo(0, 0);
                         ctx.lineTo(0, canvas.height);
                         ctx.stroke();
-                        // Right
                         ctx.beginPath();
                         ctx.moveTo(canvas.width, 0);
                         ctx.lineTo(canvas.width, canvas.height);
                         ctx.stroke();
-                        // Bottom (thicker)
                         ctx.lineWidth = bottomFrameThickness * 2;
                         ctx.beginPath();
                         ctx.moveTo(0, canvas.height);
@@ -258,7 +252,6 @@
                 };
             });
 
-            // Wait for all images to load before downloading
             Promise.all(Array.from(images).map(img => new Promise(resolve => {
                 const image = new Image();
                 image.src = img.src;
