@@ -10,22 +10,8 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden; 
-        }
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #fce7f3, #e0c3fc, #c3e6fc);
-            animation: gradientShift 10s ease infinite;
-            z-index: -1; 
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            background: #fce7f3; 
+            min-height: 100vh; 
         }
         .intro-container {
             display: flex; 
@@ -91,6 +77,26 @@
             border-radius: 15px; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
         }
+       
+        footer {
+            position: fixed; 
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            padding: 10px 0;
+            color: #ff6f91; 
+            font-size: 0.9rem;
+            font-family: 'Courier New', cursive;
+            background: rgba(255, 255, 255, 0.3); 
+            width: 100%;
+        }
+        footer a {
+            color: #8a4af3; 
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
 
         @media (max-width: 768px) {
             .intro-container {
@@ -128,6 +134,10 @@
                 width: 20px;
                 height: 20px;
             }
+            footer {
+                font-size: 0.8rem;
+                padding: 8px 0;
+            }
         }
 
         @media (max-width: 576px) {
@@ -144,24 +154,31 @@
             .photo-image {
                 max-width: 70%; 
             }
+            footer {
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
 <body class="container py-5">
-    <div class="background"></div>
     <div class="intro-container">
         <div class="image-section">
             <img src="https://d2o1gttyvhlm86.cloudfront.net/public/media/29780/large_1681930469-1-20369-PD1-23-02.png" alt="Photo Booth Example" class="photo-image">
         </div>
         <div class="text-section">
             <h1>Welcome to the Photo Booth</h1>
-            <p>Capture the moment, cherish the magic,relive the love</p>
+            <p>Capture the moment, cherish the magic, relive the love</p>
             <button class="btn" onclick="goToCameraPage()">
                 Start
                 <img src="https://img.icons8.com/ios-filled/25/ffffff/camera.png" alt="Camera Icon" class="btn-icon">
             </button>
         </div>
     </div>
+
+   
+    <footer>
+        Made by ArkarYan ♡© 2025 <a href="https://hidecard.info" target="_blank">HideCard.info</a>
+    </footer>
 
     <script>
         function goToCameraPage() {
