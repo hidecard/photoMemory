@@ -46,7 +46,7 @@
             padding-right: 20px;
         }
         .text-section {
-            text-align: left; 
+            text-align: center;
             flex: 1; 
         }
         .intro-container h1 {
@@ -91,6 +91,60 @@
             border-radius: 15px; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
         }
+
+        @media (max-width: 768px) {
+            .intro-container {
+                flex-direction: column; 
+                padding: 20px 15px; 
+                margin-top: 20px;
+                max-width: 100%; 
+            }
+            .image-section {
+                padding-right: 0;
+                padding-bottom: 20px;
+                order: 1;
+            }
+            .text-section {
+                order: 2; 
+            }
+            .intro-container h1 {
+                font-size: 1.3rem; 
+            }
+            .intro-container p {
+                font-size: 0.9rem;
+            }
+            .intro-container .btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+            .photo-image {
+                max-width: 80%; 
+            }
+            .intro-icon {
+                width: 40px; 
+                height: 40px;
+            }
+            .btn-icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .intro-container h1 {
+                font-size: 1.1rem;
+            }
+            .intro-container p {
+                font-size: 0.85rem;
+            }
+            .intro-container .btn {
+                font-size: 0.9rem;
+                padding: 8px 18px;
+            }
+            .photo-image {
+                max-width: 70%; 
+            }
+        }
     </style>
 </head>
 <body class="container py-5">
@@ -99,7 +153,7 @@
         <div class="image-section">
             <img src="https://d2o1gttyvhlm86.cloudfront.net/public/media/29780/large_1681930469-1-20369-PD1-23-02.png" alt="Photo Booth Example" class="photo-image">
         </div>
-        <div class="text-section text-center">
+        <div class="text-section">
             <h1>Welcome to the Photo Booth</h1>
             <p>You have 3 seconds for each shot—no retakes! This photobooth captures 4 pictures in a row, so strike your best pose and have fun!</p>
             <button class="btn" onclick="goToCameraPage()">
