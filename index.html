@@ -3,257 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Frame App</title>
+    <title>Photo Frame App - Intro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        #camera-container {
-            display: none;
-            position: relative;
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
         }
-        #countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 32px;
-            font-weight: bold;
-            color: red;
+        .intro-container {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
-        .photo-frame {
-            width: 150px;
-            height: 120px;
-            object-fit: cover;
-            display: block;
-            border: 10px solid transparent;
-            background-size: cover;
+        .intro-container h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
         }
-        #photo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .intro-container p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
         }
-        .frame {
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            display: inline-block;
-            background-size: cover;
-            background-position: center;
-        }
-        .frame.selected {
-            border: 2px solid blue;
+        .intro-container .btn {
+            font-size: 1.1rem;
+            padding: 10px 30px;
         }
     </style>
 </head>
 <body class="container py-5">
-    <h2 class="text-center">Photo Frame App</h2>
-    <div id="setup-container" class="text-center">
-        <button class="btn btn-primary mt-3" onclick="startCamera()">Start Camera</button>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-6 text-center position-relative" id="camera-container">
-            <p id="countdown"></p>
-            <video id="video" width="400" height="300" autoplay></video>
-            <br>
-            <button class="btn btn-danger mt-2" onclick="capturePhotos()">Capture Photos</button>
-        </div>
-        <div class="col-md-6 text-center">
-            <div id="photo-container"></div>
-        </div>
-    </div>
-
-    <div id="frame-selection" class="text-center mt-4" style="display:none;">
-        <h4>Select a Frame</h4>
-        <!-- Color Frames (Top Row) -->
-        <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
-            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div> <!-- Coral -->
-            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div> <!-- Gold -->
-            <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame('#FF69B4')"></div> <!-- Hot Pink -->
-            <div class="frame" style="background-color: #87CEEB;" onclick="selectFrame('#87CEEB')"></div> <!-- Sky Blue -->
-            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame('#FFA07A')"></div> <!-- Light Salmon -->
-            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame('#DA70D6')"></div> <!-- Orchid -->
-            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame('#FFC0CB')"></div> <!-- Pink -->
-            <div class="frame" style="background-color: #F08080;" onclick="selectFrame('#F08080')"></div> <!-- Light Coral -->
-            <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame('#DDA0DD')"></div> <!-- Plum -->
-            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('#FFB6C1')"></div> <!-- Light Pink -->
-        </div>
-
-        <!-- Texture Frames (Bottom Row) -->
-        <!-- <div class="d-flex justify-content-center gap-2 flex-wrap">
-            <div class="frame" style="background-image: url('textures/star.png');" onclick="selectTexture('textures/star.png')"></div>
-            <div class="frame" style="background-image: url('textures/heart.png');" onclick="selectTexture('textures/heart.png')"></div>
-            <div class="frame" style="background-image: url('textures/flower.png');" onclick="selectTexture('textures/flower.png')"></div>
-            <div class="frame" style="background-image: url('textures/butterfly.png');" onclick="selectTexture('textures/butterfly.png')"></div>
-            <div class="frame" style="background-image: url('textures/sparkle.png');" onclick="selectTexture('textures/sparkle.png')"></div>
-            <div class="frame" style="background-image: url('textures/ribbon.png');" onclick="selectTexture('textures/ribbon.png')"></div>
-            <div class="frame" style="background-image: url('textures/moon.png');" onclick="selectTexture('textures/moon.png')"></div>
-            <div class="frame" style="background-image: url('textures/sun.png');" onclick="selectTexture('textures/sun.png')"></div>
-            <div class="frame" style="background-image: url('textures/cloud.png');" onclick="selectTexture('textures/cloud.png')"></div>
-            <div class="frame" style="background-image: url('textures/love.png');" onclick="selectTexture('textures/love.png')"></div>
-        </div> -->
-        <button class="btn btn-success mt-3" onclick="downloadPhotos()">Save Photos</button>
+    <div class="intro-container">
+        <h1>Welcome to the Photo Frame App</h1>
+        <p>Capture your favorite moments and add beautiful frames to your photos. Choose from a variety of colors and textures to make your photos unique!</p>
+        <button class="btn btn-primary" onclick="goToCameraPage()">Start Camera</button>
     </div>
 
     <script>
-        let selectedFrame = '';
-        let selectedTexture = '';
-        let photoCount = 4;
-        let videoStream;
-
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-                videoStream = stream;
-                document.getElementById('video').srcObject = stream;
-                document.getElementById('setup-container').style.display = 'none';
-                document.getElementById('camera-container').style.display = 'block';
-            }).catch(err => alert('Camera access denied!'));
+        function goToCameraPage() {
+            // Navigate to the camera page
+            window.location.href = "./home.html";
         }
-
-        function capturePhotos() {
-            let countdown = 3;
-            const countdownElement = document.getElementById('countdown');
-            countdownElement.style.display = 'block';
-            countdownElement.innerText = `Ready to capture photos`;
-        
-            const interval = setInterval(() => {
-                countdown--;
-                countdownElement.innerText = countdown > 0 ? countdown : 'Cheese!';
-        
-                if (countdown === 0) {
-                    clearInterval(interval);
-                    countdownElement.style.display = 'none';
-                    takePhotos();
-                }
-            }, 2000); 
-        }
-        
-        async function takePhotos() {
-            const canvas = document.createElement('canvas');
-            const video = document.getElementById('video');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            const photoContainer = document.getElementById('photo-container');
-            photoContainer.innerHTML = '';
-        
-            for (let i = 0; i < photoCount; i++) {
-                let photoCountdown = 3;
-                const countdownElement = document.getElementById('countdown');
-                countdownElement.style.display = 'block';
-                countdownElement.innerText = ` ${photoCountdown}`;
-        
-                await new Promise(resolve => {
-                    const countdownInterval = setInterval(() => {
-                        photoCountdown--;
-                        countdownElement.innerText = ` ${photoCountdown}`;
-        
-                        if (photoCountdown === 0) {
-                            clearInterval(countdownInterval);
-                            resolve();
-                        }
-                    }, 2000);
-                });
-        
-                countdownElement.style.display = 'none';
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const img = document.createElement('img');
-                img.src = canvas.toDataURL('image/png');
-                img.classList.add('photo-frame');
-        
-               
-                if (selectedFrame) {
-                    img.style.border = `10px solid ${selectedFrame}`;
-                }
-        
-                // Apply selected texture
-            //    if (selectedTexture) {
-            //        img.style.backgroundImage = `url('${selectedTexture}')`;
-            //        img.style.backgroundSize = 'cover';
-            //    }
-        
-                photoContainer.appendChild(img);
-            }
-        
-            document.getElementById('frame-selection').style.display = 'block';
-        }
-        function selectFrame(frameColor) {
-            selectedFrame = frameColor;
-            selectedTexture = '';
-            document.querySelectorAll('.frame').forEach(div => div.classList.remove('selected'));
-            event.target.classList.add('selected');
-
-            
-            document.querySelectorAll('.photo-frame').forEach(img => {
-                img.style.border = `10px solid ${selectedFrame}`;
-                img.style.backgroundImage = ''; 
-            });
-        }
-
-    //    function selectTexture(textureUrl) {
-    //        selectedTexture = textureUrl;
-    //        selectedFrame = ''; // Reset color when selecting a texture
-    //        document.querySelectorAll('.frame').forEach(div => div.classList.remove('selected'));
-    //        event.target.classList.add('selected');
-
-            // Update photo preview with selected texture
-    //        document.querySelectorAll('.photo-frame').forEach(img => {
-    //            img.style.backgroundImage = `url('${selectedTexture}')`;
-    //            img.style.backgroundSize = 'cover';
-    //            img.style.border = 'none'; // Reset frame color
-    //        });
-    //    }
-
-    function downloadPhotos() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const images = document.querySelectorAll('.photo-frame');
-        const imgWidth = 150, imgHeight = 120;
-        const frameThickness = 20; 
-        canvas.width = imgWidth;
-        canvas.height = imgHeight * images.length + frameThickness;
-        let y = 0;
-    
-        images.forEach((img, index) => {
-            const image = new Image();
-            image.src = img.src;
-            image.onload = () => {
-                ctx.drawImage(image, 0, y, imgWidth, imgHeight);
-    
-                if (selectedFrame) {
-                    ctx.strokeStyle = selectedFrame;
-                    ctx.lineWidth = 15;
-                    ctx.strokeRect(0, y, imgWidth, imgHeight);
-                }
-    
-                if (index === images.length - 1) {
-                   
-                    ctx.fillRect(0, y + imgHeight, imgWidth, frameThickness);
-    
-                    const currentDate = new Date();
-                    const dateString = currentDate.toLocaleDateString(); 
-                    const timeString = currentDate.toLocaleTimeString(); 
-                    const watermarkText = `PhotoBooth  ${dateString} ${timeString}`; 
-    
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; 
-                    ctx.font = '8px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(watermarkText, imgWidth / 2, y + imgHeight + frameThickness / 2);
-                }
-    
-                y += imgHeight;
-    
-                if (index === images.length - 1) {
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
-                    link.download = 'photo.png';
-                    link.click();
-                }
-            };
-        });
-    }
     </script>
 </body>
 </html>
