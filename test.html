@@ -9,55 +9,67 @@
         #camera-container {
             display: none;
             position: relative;
+            max-width: 100%;
         }
         #countdown {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 32px;
+            font-size: 2rem;
             font-weight: bold;
             color: red;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 5px;
         }
         .photo-frame {
-            width: 150px;
+            width: 200px;
             height: 150px;
             object-fit: cover;
-            display: block;
+            margin: 10px;
             border: 10px solid transparent;
             background-size: cover;
+            border-radius: 5px;
         }
         #photo-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
         }
         .frame {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             border: 2px solid transparent;
-            display: inline-block;
+            border-radius: 5px;
             background-size: cover;
             background-position: center;
+            transition: transform 0.2s;
+        }
+        .frame:hover {
+            transform: scale(1.1);
         }
         .frame.selected {
             border: 2px solid blue;
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body class="container py-5">
-    <h2 class="text-center">Photo Frame App</h2>
+    <h2 class="text-center mb-4">Photo Frame App</h2>
     <div id="setup-container" class="text-center">
         <button class="btn btn-primary mt-3" onclick="startCamera()">Start Camera</button>
     </div>
     
     <div class="row mt-4">
-        <div class="col-md-6 text-center position-relative" id="camera-container">
-            <p id="countdown"></p>
-            <video id="video" width="400" height="300" autoplay></video>
+        <div class="col-md-6 text-center" id="camera-container">
+            <p id="countdown" style="display: none;"></p>
+            <video id="video" width="400" height="300" autoplay muted playsinline></video>
             <br>
-            <button class="btn btn-danger mt-2" onclick="capturePhotos()">Capture Photos</button>
+            <button class="btn btn-danger mt-2" onclick="capturePhotos()" disabled id="captureBtn">Capture Photos</button>
+            <button class="btn btn-secondary mt-2" onclick="stopCamera()">Stop Camera</button>
         </div>
         <div class="col-md-6 text-center">
             <div id="photo-container"></div>
@@ -66,7 +78,7 @@
 
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Frame</h4>
-        <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-3">
             <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div>
             <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div>
             <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame('#FF69B4')"></div>
@@ -83,132 +95,159 @@
 
     <script>
         let selectedFrame = '';
-        let photoCount = 4;
-        let videoStream;
+        const photoCount = 4;
+        let videoStream = null;
+        let isCapturing = false;
 
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-                videoStream = stream;
-                document.getElementById('video').srcObject = stream;
+        async function startCamera() {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' } 
+                });
+                const video = document.getElementById('video');
+                video.srcObject = videoStream;
                 document.getElementById('setup-container').style.display = 'none';
                 document.getElementById('camera-container').style.display = 'block';
-            }).catch(err => alert('Camera access denied!'));
+                document.getElementById('captureBtn').disabled = false;
+            } catch (err) {
+                alert('Failed to access camera: ' + err.message);
+            }
         }
 
-        function capturePhotos() {
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                document.getElementById('video').srcObject = null;
+                document.getElementById('camera-container').style.display = 'none';
+                document.getElementById('setup-container').style.display = 'block';
+                document.getElementById('captureBtn').disabled = true;
+            }
+        }
+
+        async function capturePhotos() {
+            if (isCapturing) return;
+            isCapturing = true;
+            const captureBtn = document.getElementById('captureBtn');
+            captureBtn.disabled = true;
+
             let countdown = 3;
             const countdownElement = document.getElementById('countdown');
             countdownElement.style.display = 'block';
-            countdownElement.innerText = `Ready to capture photos`;
-        
-            const interval = setInterval(() => {
-                countdown--;
-                countdownElement.innerText = countdown > 0 ? countdown : 'Cheese!';
-        
-                if (countdown === 0) {
-                    clearInterval(interval);
-                    countdownElement.style.display = 'none';
-                    takePhotos();
-                }
-            }, 2000); 
+            countdownElement.innerText = `Get Ready! ${countdown}`;
+
+            await new Promise(resolve => {
+                const interval = setInterval(() => {
+                    countdown--;
+                    countdownElement.innerText = countdown > 0 ? countdown : 'Smile!';
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 1000);
+            });
+
+            countdownElement.style.display = 'none';
+            await takePhotos();
+            captureBtn.disabled = false;
+            isCapturing = false;
         }
-        
+
         async function takePhotos() {
-            const canvas = document.createElement('canvas');
             const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             const ctx = canvas.getContext('2d');
             const photoContainer = document.getElementById('photo-container');
             photoContainer.innerHTML = '';
-        
+
             for (let i = 0; i < photoCount; i++) {
-                let photoCountdown = 3;
                 const countdownElement = document.getElementById('countdown');
                 countdownElement.style.display = 'block';
-                countdownElement.innerText = ` ${photoCountdown}`;
-        
+                let photoCountdown = 3;
+
                 await new Promise(resolve => {
-                    const countdownInterval = setInterval(() => {
+                    countdownElement.innerText = `${i + 1}/${photoCount}: ${photoCountdown}`;
+                    const interval = setInterval(() => {
                         photoCountdown--;
-                        countdownElement.innerText = ` ${photoCountdown}`;
-        
-                        if (photoCountdown === 0) {
-                            clearInterval(countdownInterval);
+                        countdownElement.innerText = `${i + 1}/${photoCount}: ${photoCountdown}`;
+                        if (photoCountdown <= 0) {
+                            clearInterval(interval);
                             resolve();
                         }
-                    }, 2000);
+                    }, 1000);
                 });
-        
+
                 countdownElement.style.display = 'none';
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const img = document.createElement('img');
                 img.src = canvas.toDataURL('image/png');
                 img.classList.add('photo-frame');
-        
                 if (selectedFrame) {
                     img.style.border = `10px solid ${selectedFrame}`;
                 }
-        
                 photoContainer.appendChild(img);
             }
-        
+
             document.getElementById('frame-selection').style.display = 'block';
         }
 
         function selectFrame(frameColor) {
             selectedFrame = frameColor;
-            document.querySelectorAll('.frame').forEach(div => div.classList.remove('selected'));
+            document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
-        
             document.querySelectorAll('.photo-frame').forEach(img => {
                 img.style.border = `10px solid ${selectedFrame}`;
             });
         }
 
         function downloadPhotos() {
+            const images = document.querySelectorAll('.photo-frame');
+            if (images.length === 0) {
+                alert('No photos to download!');
+                return;
+            }
+
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            const images = document.querySelectorAll('.photo-frame');
-            const imgWidth = 150, imgHeight = 150;
-            const frameThickness = 20; 
-            canvas.width = imgWidth;
-            canvas.height = imgHeight * images.length + frameThickness;
-            let y = 0;
-        
+            const imgWidth = 200;
+            const imgHeight = 150;
+            const frameThickness = 20;
+            canvas.width = imgWidth + frameThickness * 2;
+            canvas.height = (imgHeight * images.length) + frameThickness * 2 + 20;
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            let y = frameThickness;
             images.forEach((img, index) => {
                 const image = new Image();
+                image.crossOrigin = 'anonymous';
                 image.src = img.src;
                 image.onload = () => {
-                    ctx.drawImage(image, 0, y, imgWidth, imgHeight);
-        
+                    ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
+
                     if (selectedFrame) {
                         ctx.strokeStyle = selectedFrame;
-                        ctx.lineWidth = 15;
-                        ctx.strokeRect(0, y, imgWidth, imgHeight);
+                        ctx.lineWidth = frameThickness;
+                        ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
                     }
-        
+
                     if (index === images.length - 1) {
                         const currentDate = new Date();
-                        const dateString = currentDate.toLocaleDateString(); 
-                        const timeString = currentDate.toLocaleTimeString(); 
-                        const watermarkText = `PhotoBooth  ${dateString} ${timeString}`; 
-        
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; 
-                        ctx.font = '8px Arial';
+                        const dateTime = currentDate.toLocaleString();
+                        const watermarkText = `PhotoBooth ${dateTime}`;
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Arial';
                         ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillText(watermarkText, imgWidth / 2, y + imgHeight + frameThickness / 2);
-                    }
-        
-                    y += imgHeight;
-        
-                    if (index === images.length - 1) {
+                        ctx.fillText(watermarkText, canvas.width / 2, canvas.height - 10);
+
                         const link = document.createElement('a');
                         link.href = canvas.toDataURL('image/png');
-                        link.download = 'photo.png';
+                        link.download = `photobooth_${Date.now()}.png`;
                         link.click();
                     }
+                    y += imgHeight;
                 };
             });
         }
