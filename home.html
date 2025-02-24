@@ -59,7 +59,6 @@
             object-fit: cover;
             margin: 0;
             border-radius: 0;
-            position: relative;
         }
         #photo-container {
             display: flex;
@@ -76,6 +75,7 @@
             background-position: center;
             transition: transform 0.3s ease;
             position: relative;
+            margin: 5px;
         }
         .frame:hover {
             transform: scale(1.15);
@@ -125,6 +125,13 @@
         #frame-selection h4 {
             color: #ff6f91;
             font-family: 'Courier New', cursive;
+        }
+        .frame-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
         }
         .frame-white {
             background: #ffffff;
@@ -286,6 +293,10 @@
             .frame {
                 width: 40px;
                 height: 40px;
+                margin: 4px;
+            }
+            .frame-container {
+                gap: 8px;
             }
             #countdown {
                 font-size: 1.8rem;
@@ -311,6 +322,10 @@
             .frame {
                 width: 35px;
                 height: 35px;
+                margin: 3px;
+            }
+            .frame-container {
+                gap: 6px;
             }
             .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
             .frame-sunflowers::after, .frame-sunflowers::before, .frame-flowers::after, .frame-flowers::before,
@@ -321,6 +336,22 @@
             #countdown {
                 font-size: 1.5rem;
                 padding: 10px 15px;
+            }
+        }
+        @media (max-width: 400px) {
+            .frame {
+                width: 30px;
+                height: 30px;
+                margin: 2px;
+            }
+            .frame-container {
+                gap: 4px;
+            }
+            .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
+            .frame-sunflowers::after, .frame-sunflowers::before, .frame-flowers::after, .frame-flowers::before,
+            .frame-bows::after, .frame-bows::before, .frame-bunnies::after, .frame-bunnies::before,
+            .frame-clouds::after, .frame-clouds::before, .frame-cats::after, .frame-cats::before {
+                font-size: 12px;
             }
         }
     </style>
@@ -358,8 +389,8 @@
 
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Cute Frame</h4>
-        <div class="d-flex justify-content-center gap-3 flex-wrap mb-3">
-            <!-- 10 Color Frames -->
+        <!-- Top Row: 10 Color Frames -->
+        <div class="frame-container">
             <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div>
             <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div>
             <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame('#FF69B4')"></div>
@@ -370,7 +401,9 @@
             <div class="frame" style="background-color: #F08080;" onclick="selectFrame('#F08080')"></div>
             <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame('#DDA0DD')"></div>
             <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('#FFB6C1')"></div>
-            <!-- 10 Pattern Frames -->
+        </div>
+        <!-- Bottom Row: 10 Pattern Frames -->
+        <div class="frame-container">
             <div class="frame frame-white" onclick="selectFrame('#ffffff', 'dashed')"></div>
             <div class="frame frame-stars" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'stars')"></div>
             <div class="frame frame-hearts" style="background-color: #ffb6c1;" onclick="selectFrame('#ffb6c1', 'hearts')"></div>
@@ -450,10 +483,6 @@
 
         async function takePhotos() {
             const video = document.getElementById('video');
-            const canvas = document.createElement('canvas');
-            canvas.width = 200;
-            canvas.height = 200;
-            const ctx = canvas.getContext('2d');
             const photoContainer = document.getElementById('photo-container');
             photoContainer.innerHTML = '';
             fullResImages = [];
@@ -476,54 +505,113 @@
                 });
 
                 countdownElement.style.display = 'none';
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+
                 const imgData = canvas.toDataURL('image/png');
                 fullResImages.push(imgData);
 
                 const img = document.createElement('img');
                 img.src = imgData;
                 img.classList.add('photo-frame');
-                applyFrameStyle(img);
                 photoContainer.appendChild(img);
             }
 
             document.getElementById('frame-selection').style.display = 'block';
         }
 
-        function applyFrameStyle(img) {
+        function applyFrameStyleToCanvas(ctx, x, y, width, height) {
             if (selectedFrame) {
-                img.style.border = '';
-                img.style.background = '';
+                const frameThickness = 5;
                 if (selectedFrameStyle === 'dashed') {
-                    img.style.border = '5px dashed #ff6f91';
+                    ctx.setLineDash([10, 5]);
+                    ctx.strokeStyle = '#ff6f91';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.setLineDash([]);
                 } else if (selectedFrameStyle === 'stars') {
-                    img.style.border = '5px solid #ff6f91';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff6f91%27%3E★%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff6f91%27%3E★%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ff6f91';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff6f91';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('★', x + 10, y + 20);
+                    ctx.fillText('★', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'hearts') {
-                    img.style.border = '5px solid #ff69b4';
-                    img.style.background = '#ffb6c1 url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff69b4%27%3E♥%3C/text%3E%3C/svg%3E") top left no-repeat, #ffb6c1 url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff69b4%27%3E♥%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ff69b4';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff69b4';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('♥', x + 10, y + 20);
+                    ctx.fillText('♥', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'sunflowers') {
-                    img.style.border = '5px solid #FFD700';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27%3E🌻%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27%3E🌻%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#FFD700';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#FFD700';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🌻', x + 10, y + 20);
+                    ctx.fillText('🌻', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'flowers') {
-                    img.style.border = '5px solid #ff9cc7';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff9cc7%27%3E❀%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff9cc7%27%3E❀%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ff9cc7';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff9cc7';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('❀', x + 10, y + 20);
+                    ctx.fillText('❀', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'bows') {
-                    img.style.border = '5px solid #ff69b4';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff69b4%27%3E🎀%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff69b4%27%3E🎀%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ff69b4';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff69b4';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🎀', x + 10, y + 20);
+                    ctx.fillText('🎀', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'bunnies') {
-                    img.style.border = '5px solid #ffb6c1';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27%3E🐰%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27%3E🐰%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ffb6c1';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🐰', x + 10, y + 20);
+                    ctx.fillText('🐰', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'waves') {
-                    img.style.border = '5px solid #ff9cc7';
+                    ctx.strokeStyle = '#ff9cc7';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.beginPath();
+                    ctx.moveTo(x + frameThickness, y + 20);
+                    ctx.quadraticCurveTo(x + width / 2, y - 10, x + width - frameThickness, y + 20);
+                    ctx.stroke();
                 } else if (selectedFrameStyle === 'clouds') {
-                    img.style.border = '5px solid #c3e6fc';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23c3e6fc%27%3E☁%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23c3e6fc%27%3E☁%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#c3e6fc';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#c3e6fc';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('☁', x + 10, y + 20);
+                    ctx.fillText('☁', x + width - 20, y + height - 10);
                 } else if (selectedFrameStyle === 'cats') {
-                    img.style.border = '5px solid #ff6f91';
-                    img.style.background = '#ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff6f91%27%3E🐾%3C/text%3E%3C/svg%3E") top left no-repeat, #ffffff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2720%27 height=%2720%27%3E%3Ctext x=%275%27 y=%2715%27 fill=%27%23ff6f91%27%3E🐾%3C/text%3E%3C/svg%3E") bottom right no-repeat';
+                    ctx.strokeStyle = '#ff6f91';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff6f91';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🐾', x + 10, y + 20);
+                    ctx.fillText('🐾', x + width - 20, y + height - 10);
                 } else {
-                    img.style.border = `5px solid ${selectedFrame}`;
+                    ctx.strokeStyle = selectedFrame;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
                 }
             }
         }
@@ -533,7 +621,27 @@
             selectedFrameStyle = style;
             document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
-            document.querySelectorAll('.photo-frame').forEach(img => applyFrameStyle(img));
+            redrawPhotosWithFrame();
+        }
+
+        function redrawPhotosWithFrame() {
+            const photoContainer = document.getElementById('photo-container');
+            photoContainer.innerHTML = '';
+            fullResImages.forEach(imgData => {
+                const img = document.createElement('img');
+                img.src = imgData;
+                img.classList.add('photo-frame');
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+
+                img.src = canvas.toDataURL('image/png');
+                photoContainer.appendChild(img);
+            });
         }
 
         function downloadPhotos() {
@@ -565,92 +673,7 @@
                 .then(() => {
                     imageObjects.forEach((image, index) => {
                         ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
-
-                        if (selectedFrame) {
-                            if (selectedFrameStyle === 'dashed') {
-                                ctx.setLineDash([10, 5]);
-                                ctx.strokeStyle = '#ff6f91';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.setLineDash([]);
-                            } else if (selectedFrameStyle === 'stars') {
-                                ctx.strokeStyle = '#ff6f91';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ff6f91';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('★', frameThickness + 10, y + 20);
-                                ctx.fillText('★', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'hearts') {
-                                ctx.strokeStyle = '#ff69b4';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ff69b4';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('♥', frameThickness + 10, y + 20);
-                                ctx.fillText('♥', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'sunflowers') {
-                                ctx.strokeStyle = '#FFD700';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#FFD700';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('🌻', frameThickness + 10, y + 20);
-                                ctx.fillText('🌻', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'flowers') {
-                                ctx.strokeStyle = '#ff9cc7';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ff9cc7';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('❀', frameThickness + 10, y + 20);
-                                ctx.fillText('❀', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'bows') {
-                                ctx.strokeStyle = '#ff69b4';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ff69b4';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('🎀', frameThickness + 10, y + 20);
-                                ctx.fillText('🎀', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'bunnies') {
-                                ctx.strokeStyle = '#ffb6c1';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ffb6c1';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('🐰', frameThickness + 10, y + 20);
-                                ctx.fillText('🐰', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'waves') {
-                                ctx.strokeStyle = '#ff9cc7';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.beginPath();
-                                ctx.moveTo(frameThickness, y + 20);
-                                ctx.quadraticCurveTo(frameThickness + imgWidth / 2, y - 10, frameThickness + imgWidth, y + 20);
-                                ctx.stroke();
-                            } else if (selectedFrameStyle === 'clouds') {
-                                ctx.strokeStyle = '#c3e6fc';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#c3e6fc';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('☁', frameThickness + 10, y + 20);
-                                ctx.fillText('☁', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else if (selectedFrameStyle === 'cats') {
-                                ctx.strokeStyle = '#ff6f91';
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                                ctx.fillStyle = '#ff6f91';
-                                ctx.font = '20px Arial';
-                                ctx.fillText('🐾', frameThickness + 10, y + 20);
-                                ctx.fillText('🐾', frameThickness + imgWidth - 20, y + imgHeight - 10);
-                            } else {
-                                ctx.strokeStyle = selectedFrame;
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeRect(frameThickness, y, imgWidth, imgHeight);
-                            }
-                        }
+                        applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight);
 
                         if (index === images.length - 1 && selectedFrame) {
                             ctx.lineWidth = frameThickness * 2;
