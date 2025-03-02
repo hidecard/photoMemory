@@ -122,11 +122,11 @@
         .btn-flip:hover {
             background-color: #d1b3f5;
         }
-        #frame-selection h4 {
+        #frame-selection h4, #effect-selection h4 {
             color: #ff6f91;
             font-family: 'Courier New', cursive;
         }
-        .frame-container {
+        .frame-container, .effect-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -264,6 +264,20 @@
             color: #ff6f91;
             font-size: 20px;
         }
+        .effect-btn {
+            background-color: #ffb6c1;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+        }
+        .effect-btn:hover {
+            background-color: #ff9cc7;
+        }
+        .effect-btn.selected {
+            outline: 2px solid #ff6f91;
+        }
         @media (max-width: 768px) {
             .row {
                 flex-direction: column;
@@ -295,7 +309,7 @@
                 height: 40px;
                 margin: 4px;
             }
-            .frame-container {
+            .frame-container, .effect-container {
                 gap: 8px;
             }
             #countdown {
@@ -324,7 +338,7 @@
                 height: 35px;
                 margin: 3px;
             }
-            .frame-container {
+            .frame-container, .effect-container {
                 gap: 6px;
             }
             .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
@@ -344,7 +358,7 @@
                 height: 30px;
                 margin: 2px;
             }
-            .frame-container {
+            .frame-container, .effect-container {
                 gap: 4px;
             }
             .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
@@ -381,6 +395,15 @@
                 Flip Camera
                 <img src="https://img.icons8.com/ios-filled/20/ffffff/refresh.png" alt="Flip Icon">
             </button>
+            <div id="effect-selection" class="mt-3" style="display: none;">
+                <h4>Choose an Effect</h4>
+                <div class="effect-container">
+                    <button class="effect-btn" onclick="applyEffect('none')">None</button>
+                    <button class="effect-btn" onclick="applyEffect('sepia(1)')">Sepia</button>
+                    <button class="effect-btn" onclick="applyEffect('grayscale(1)')">B&W</button>
+                    <button class="effect-btn" onclick="applyEffect('blur(2px)')">Blur</button>
+                </div>
+            </div>
         </div>
         <div class="col-md-6 text-center">
             <div id="photo-container"></div>
@@ -430,6 +453,7 @@
     <script>
         let selectedFrame = '';
         let selectedFrameStyle = '';
+        let currentEffect = 'none';
         let finalCanvasData = null;
         const photoCount = 4;
         let videoStream = null;
@@ -447,8 +471,10 @@
                 });
                 const video = document.getElementById('video');
                 video.srcObject = videoStream;
+                video.style.filter = currentEffect;
                 document.getElementById('setup-container').style.display = 'none';
                 document.getElementById('camera-container').style.display = 'block';
+                document.getElementById('effect-selection').style.display = 'block';
                 document.getElementById('captureBtn').disabled = false;
             } catch (err) {
                 alert('Failed to access camera: ' + err.message);
@@ -458,6 +484,14 @@
         async function flipCamera() {
             facingMode = facingMode === 'user' ? 'environment' : 'user';
             await startCamera();
+        }
+
+        function applyEffect(effect) {
+            currentEffect = effect;
+            const video = document.getElementById('video');
+            video.style.filter = effect;
+            document.querySelectorAll('.effect-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
         }
 
         async function capturePhotos() {
@@ -518,8 +552,9 @@
                 canvas.height = 200;
                 const ctx = canvas.getContext('2d');
 
+                ctx.filter = currentEffect;
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none';
 
                 const imgData = canvas.toDataURL('image/png');
                 fullResImages.push(imgData);
@@ -531,6 +566,7 @@
             }
 
             document.getElementById('frame-selection').style.display = 'block';
+            document.getElementById('effect-selection').style.display = 'none';
         }
 
         function applyFrameStyleToCanvas(ctx, x, y, width, height) {
@@ -634,19 +670,24 @@
             const photoContainer = document.getElementById('photo-container');
             photoContainer.innerHTML = '';
             fullResImages.forEach(imgData => {
-                const img = document.createElement('img');
+                const img = new Image();
                 img.src = imgData;
-                img.classList.add('photo-frame');
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 200;
+                    canvas.height = 200;
+                    const ctx = canvas.getContext('2d');
+                    
+                    ctx.filter = currentEffect;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.filter = 'none';
+                    applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
 
-                const canvas = document.createElement('canvas');
-                canvas.width = 200;
-                canvas.height = 200;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
-
-                img.src = canvas.toDataURL('image/png');
-                photoContainer.appendChild(img);
+                    const newImg = document.createElement('img');
+                    newImg.src = canvas.toDataURL('image/png');
+                    newImg.classList.add('photo-frame');
+                    photoContainer.appendChild(newImg);
+                };
             });
         }
 
@@ -655,8 +696,10 @@
             photoContainer.innerHTML = '';
             fullResImages = [];
             document.getElementById('frame-selection').style.display = 'none';
+            document.getElementById('effect-selection').style.display = 'block';
             document.getElementById('captureBtn').disabled = false;
             isCapturing = false;
+            startCamera();
         }
 
         function downloadPhotos() {
@@ -687,7 +730,9 @@
             Promise.all(imageObjects.map(img => new Promise(resolve => img.onload = resolve)))
                 .then(() => {
                     imageObjects.forEach((image, index) => {
+                        ctx.filter = currentEffect;
                         ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
+                        ctx.filter = 'none';
                         applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight);
 
                         if (index === images.length - 1 && selectedFrame) {
