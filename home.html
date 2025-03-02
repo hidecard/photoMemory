@@ -48,7 +48,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             font-family: 'Courier New', cursive;
             animation: pulse 0.5s infinite alternate;
-            z-index: 10; /* Ensure countdown is above video */
+            z-index: 10;
         }
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
@@ -660,42 +660,40 @@
         }
 
         function selectFrame(event, frameColor, style = '') {
-            event.preventDefault(); // Prevent any default behavior that might cause reload
+            event.preventDefault(); // Prevent any default behavior
             selectedFrame = frameColor;
             selectedFrameStyle = style;
-            document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('selected'));
+            const frames = document.querySelectorAll('.frame');
+            frames.forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
             redrawPhotosWithFrame();
         }
 
-        async function redrawPhotosWithFrame() {
+        function redrawPhotosWithFrame() {
             const photoContainer = document.getElementById('photo-container');
-            photoContainer.innerHTML = ''; // Clear container first
-            const promises = fullResImages.map(imgData => {
-                return new Promise(resolve => {
-                    const img = new Image();
-                    img.src = imgData;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = 200;
-                        canvas.height = 200;
-                        const ctx = canvas.getContext('2d');
-                        
-                        ctx.filter = currentEffect;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        ctx.filter = 'none';
-                        applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+            const fragment = document.createDocumentFragment(); // Use a fragment to avoid multiple DOM updates
 
-                        const newImg = document.createElement('img');
-                        newImg.src = canvas.toDataURL('image/png');
-                        newImg.classList.add('photo-frame');
-                        photoContainer.appendChild(newImg);
-                        resolve();
-                    };
-                });
+            fullResImages.forEach(imgData => {
+                const img = new Image();
+                img.src = imgData;
+                const canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+
+                ctx.filter = currentEffect;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none';
+                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+
+                const newImg = document.createElement('img');
+                newImg.src = canvas.toDataURL('image/png');
+                newImg.classList.add('photo-frame');
+                fragment.appendChild(newImg); // Add to fragment instead of directly to DOM
             });
 
-            await Promise.all(promises); // Wait for all images to load and render
+            photoContainer.innerHTML = ''; // Clear container once
+            photoContainer.appendChild(fragment); // Append all images at once
         }
 
         function retakePhotos() {
