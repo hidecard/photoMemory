@@ -60,6 +60,7 @@
             object-fit: cover;
             margin: 0;
             border-radius: 0;
+            position: relative;
         }
         #photo-container {
             display: flex;
@@ -67,7 +68,7 @@
             align-items: center;
             padding: 0;
         }
-        .frame {
+        .frame, .background-option {
             width: 50px;
             height: 50px;
             cursor: pointer;
@@ -78,10 +79,10 @@
             position: relative;
             margin: 5px;
         }
-        .frame:hover {
+        .frame:hover, .background-option:hover {
             transform: scale(1.15);
         }
-        .frame.selected {
+        .frame.selected, .background-option.selected, .layout-btn.selected, .effect-btn.selected {
             transform: scale(1.15);
             outline: 2px solid #ff6f91;
             outline-offset: 2px;
@@ -123,11 +124,11 @@
         .btn-flip:hover {
             background-color: #d1b3f5;
         }
-        #frame-selection h4, #effect-selection h4 {
+        #frame-selection h4, #effect-selection h4, #layout-selection h4, #background-selection h4 {
             color: #ff6f91;
             font-family: 'Courier New', cursive;
         }
-        .frame-container, .effect-container {
+        .frame-container, .effect-container, .layout-container, .background-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -138,134 +139,24 @@
             background: #ffffff;
             border: 2px dashed #ff6f91;
         }
-        .frame-stars::after {
-            content: '★';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #ff6f91;
-            font-size: 18px;
-        }
-        .frame-stars::before {
-            content: '★';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #ff6f91;
-            font-size: 18px;
-        }
-        .frame-hearts::after {
-            content: '♥';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #ff69b4;
-            font-size: 20px;
-        }
-        .frame-hearts::before {
-            content: '♥';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #ff69b4;
-            font-size: 20px;
-        }
-        .frame-sunflowers::after {
-            content: '🌻';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            font-size: 20px;
-        }
-        .frame-sunflowers::before {
-            content: '🌻';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 20px;
-        }
-        .frame-flowers::after {
-            content: '❀';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #ff9cc7;
-            font-size: 20px;
-        }
-        .frame-flowers::before {
-            content: '❀';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #ff9cc7;
-            font-size: 20px;
-        }
-        .frame-bows::after {
-            content: '🎀';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #ff69b4;
-            font-size: 20px;
-        }
-        .frame-bows::before {
-            content: '🎀';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #ff69b4;
-            font-size: 20px;
-        }
-        .frame-bunnies::after {
-            content: '🐰';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            font-size: 20px;
-        }
-        .frame-bunnies::before {
-            content: '🐰';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 20px;
-        }
-        .frame-waves {
-            background: linear-gradient(45deg, #ffffff, #ff9cc7);
-        }
-        .frame-clouds::after {
-            content: '☁';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #c3e6fc;
-            font-size: 20px;
-        }
-        .frame-clouds::before {
-            content: '☁';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #c3e6fc;
-            font-size: 20px;
-        }
-        .frame-cats::after {
-            content: '🐾';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #ff6f91;
-            font-size: 20px;
-        }
-        .frame-cats::before {
-            content: '🐾';
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            color: #ff6f91;
-            font-size: 20px;
-        }
-        .effect-btn {
+        .frame-stars::after { content: '★'; position: absolute; top: 5px; left: 5px; color: #ff6f91; font-size: 18px; }
+        .frame-stars::before { content: '★'; position: absolute; bottom: 5px; right: 5px; color: #ff6f91; font-size: 18px; }
+        .frame-hearts::after { content: '♥'; position: absolute; top: 5px; left: 5px; color: #ff69b4; font-size: 20px; }
+        .frame-hearts::before { content: '♥'; position: absolute; bottom: 5px; right: 5px; color: #ff69b4; font-size: 20px; }
+        .frame-sunflowers::after { content: '🌻'; position: absolute; top: 5px; left: 5px; font-size: 20px; }
+        .frame-sunflowers::before { content: '🌻'; position: absolute; bottom: 5px; right: 5px; font-size: 20px; }
+        .frame-flowers::after { content: '❀'; position: absolute; top: 5px; left: 5px; color: #ff9cc7; font-size: 20px; }
+        .frame-flowers::before { content: '❀'; position: absolute; bottom: 5px; right: 5px; color: #ff9cc7; font-size: 20px; }
+        .frame-bows::after { content: '🎀'; position: absolute; top: 5px; left: 5px; color: #ff69b4; font-size: 20px; }
+        .frame-bows::before { content: '🎀'; position: absolute; bottom: 5px; right: 5px; color: #ff69b4; font-size: 20px; }
+        .frame-bunnies::after { content: '🐰'; position: absolute; top: 5px; left: 5px; font-size: 20px; }
+        .frame-bunnies::before { content: '🐰'; position: absolute; bottom: 5px; right: 5px; font-size: 20px; }
+        .frame-waves { background: linear-gradient(45deg, #ffffff, #ff9cc7); }
+        .frame-clouds::after { content: '☁'; position: absolute; top: 5px; left: 5px; color: #c3e6fc; font-size: 20px; }
+        .frame-clouds::before { content: '☁'; position: absolute; bottom: 5px; right: 5px; color: #c3e6fc; font-size: 20px; }
+        .frame-cats::after { content: '🐾'; position: absolute; top: 5px; left: 5px; color: #ff6f91; font-size: 20px; }
+        .frame-cats::before { content: '🐾'; position: absolute; bottom: 5px; right: 5px; color: #ff6f91; font-size: 20px; }
+        .effect-btn, .layout-btn {
             background-color: #ffb6c1;
             border: none;
             padding: 5px 15px;
@@ -273,109 +164,50 @@
             color: white;
             cursor: pointer;
         }
-        .effect-btn:hover {
+        .effect-btn:hover, .layout-btn:hover {
             background-color: #ff9cc7;
         }
-        .effect-btn.selected {
-            outline: 2px solid #ff6f91;
+        .polaroid-stack {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: -60px auto 0; /* Adjusted for more spacing */
+        }
+        .polaroid-stack:first-child {
+            margin-top: 20px;
         }
         @media (max-width: 768px) {
-            .row {
-                flex-direction: column;
-            }
-            #camera-container, #photo-container {
-                padding: 10px;
-            }
-            video {
-                width: 100%;
-                height: auto;
-            }
-            .photo-frame {
-                width: 150px;
-                height: 150px;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            p {
-                font-size: 0.95rem;
-            }
-            .btn-custom {
-                font-size: 0.95rem;
-                padding: 8px 20px;
-                min-width: 120px;
-            }
-            .frame {
-                width: 40px;
-                height: 40px;
-                margin: 4px;
-            }
-            .frame-container, .effect-container {
-                gap: 8px;
-            }
-            #countdown {
-                font-size: 1.8rem;
-                padding: 15px 20px;
-            }
+            .row { flex-direction: column; }
+            #camera-container, #photo-container { padding: 10px; }
+            video { width: 100%; height: auto; }
+            .photo-frame { width: 150px; height: 150px; }
+            .polaroid-stack { width: 165px; height: 165px; margin: -45px auto 0; }
+            .polaroid-stack:first-child { margin-top: 15px; }
+            h2 { font-size: 1.5rem; }
+            p { font-size: 0.95rem; }
+            .btn-custom { font-size: 0.95rem; padding: 8px 20px; min-width: 120px; }
+            .frame, .background-option { width: 40px; height: 40px; margin: 4px; }
+            .frame-container, .effect-container, .layout-container, .background-container { gap: 8px; }
+            #countdown { font-size: 1.8rem; padding: 15px 20px; }
         }
         @media (max-width: 576px) {
-            .photo-frame {
-                width: 120px;
-                height: 120px;
-            }
-            h2 {
-                font-size: 1.3rem;
-            }
-            p {
-                font-size: 0.85rem;
-            }
-            .btn-custom {
-                font-size: 0.85rem;
-                padding: 6px 15px;
-                min-width: 100px;
-            }
-            .frame {
-                width: 35px;
-                height: 35px;
-                margin: 3px;
-            }
-            .frame-container, .effect-container {
-                gap: 6px;
-            }
-            .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
-            .frame-sunflowers::after, .frame-sunflowers::before, .frame-flowers::after, .frame-flowers::before,
-            .frame-bows::after, .frame-bows::before, .frame-bunnies::after, .frame-bunnies::before,
-            .frame-clouds::after, .frame-clouds::before, .frame-cats::after, .frame-cats::before {
-                font-size: 14px;
-            }
-            #countdown {
-                font-size: 1.5rem;
-                padding: 10px 15px;
-            }
-        }
-        @media (max-width: 400px) {
-            .frame {
-                width: 30px;
-                height: 30px;
-                margin: 2px;
-            }
-            .frame-container, .effect-container {
-                gap: 4px;
-            }
-            .frame-stars::after, .frame-stars::before, .frame-hearts::after, .frame-hearts::before,
-            .frame-sunflowers::after, .frame-sunflowers::before, .frame-flowers::after, .frame-flowers::before,
-            .frame-bows::after, .frame-bows::before, .frame-bunnies::after, .frame-bunnies::before,
-            .frame-clouds::after, .frame-clouds::before, .frame-cats::after, .frame-cats::before {
-                font-size: 12px;
-            }
+            .photo-frame { width: 120px; height: 120px; }
+            .polaroid-stack { width: 132px; height: 132px; margin: -36px auto 0; }
+            .polaroid-stack:first-child { margin-top: 10px; }
+            h2 { font-size: 1.3rem; }
+            p { font-size: 0.85rem; }
+            .btn-custom { font-size: 0.85rem; padding: 6px 15px; min-width: 100px; }
+            .frame, .background-option { width: 35px; height: 35px; margin: 3px; }
+            .frame-container, .effect-container, .layout-container, .background-container { gap: 6px; }
+            #countdown { font-size: 1.5rem; padding: 10px 15px; }
         }
     </style>
 </head>
 <body class="container py-5">
     <h2 class="text-center mb-4">
-        PhotoBooth<br><small style="font-size: 1rem;">Beta V 1.0</small>
+        PhotoBooth<br><small style="font-size: 1rem;">Beta V 1.1</small>
     </h2>
-    <p class="text-center">You have 3 seconds for each shot—no retakes! This photobooth captures 4 pictures in a row, so strike your best pose and have fun!</p>
+    <p class="text-center">You have a custom countdown for each shot—no retakes! This photobooth captures 4 pictures in a row, so strike your best pose and have fun!</p>
     <div id="setup-container" class="text-center">
         <button class="btn btn-custom mt-3" onclick="startCamera()">
             Start Camera
@@ -385,6 +217,14 @@
     
     <div class="row mt-4">
         <div class="col-md-6 text-center" id="camera-container">
+            <label for="countdown-select" class="me-2">Countdown (seconds):</label>
+            <select id="countdown-select" class="form-select d-inline-block w-auto mb-3">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
             <p id="countdown" style="display: none;"></p>
             <video id="video" width="400" height="400" autoplay muted playsinline class="rounded"></video>
             <br>
@@ -437,9 +277,34 @@
             <div class="frame frame-clouds" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'clouds')"></div>
             <div class="frame frame-cats" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'cats')"></div>
         </div>
+    </div>
+
+    <div id="layout-selection" class="text-center mt-4" style="display:none;">
+        <h4>Choose a Layout</h4>
+        <div class="layout-container">
+            <button class="layout-btn selected" data-layout="vertical" onclick="selectLayout('vertical')">Vertical Strip</button>
+            <button class="layout-btn" data-layout="grid" onclick="selectLayout('grid')">2x2 Grid</button>
+            <button class="layout-btn" data-layout="polaroid" onclick="selectLayout('polaroid')">Polaroid Stack</button>
+        </div>
+    </div>
+
+    <div id="background-selection" class="text-center mt-4" style="display:none;">
+        <h4>Swap Background</h4>
+        <div class="background-container">
+            <div class="background-option" style="background-color: #87CEEB;" onclick="selectBackground('solid', '#87CEEB')" title="Sky Blue"></div>
+            <div class="background-option" style="background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=50&h=50')" onclick="selectBackground('image', 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0')" title="Beach"></div>
+            <div class="background-option" style="background: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=50&h=50')" onclick="selectBackground('image', 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986')" title="Stars"></div>
+            <label class="background-option" style="background-color: #fff; border: 2px dashed #ff6f91; display: flex; align-items: center; justify-content: center;">
+                <input type="file" accept="image/*" onchange="uploadBackground(event)" style="display: none;">
+                <span>+</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="text-center mt-4" style="display:none;" id="action-buttons">
         <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()">
             Retake Photos
-            <img src="https://img.icons8.com/ios-filled/20/ffffff/retry.png" alt="Retake Icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/306/306473.png" alt="Retake Icon" style="width: 20px; height: 20px; filter: invert(1);">
         </button>
         <button class="btn btn-custom mt-3" onclick="sharePhotos()">
             Share Photos
@@ -455,6 +320,10 @@
         let selectedFrame = '';
         let selectedFrameStyle = '';
         let currentEffect = 'none';
+        let selectedLayout = 'vertical';
+        let selectedBackgroundType = null;
+        let selectedBackgroundValue = null;
+        let backgroundImage = null;
         let finalCanvasData = null;
         const photoCount = 4;
         let videoStream = null;
@@ -493,6 +362,7 @@
             video.style.filter = effect;
             document.querySelectorAll('.effect-btn').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
+            redrawPhotos();
         }
 
         async function capturePhotos() {
@@ -501,7 +371,8 @@
             const captureBtn = document.getElementById('captureBtn');
             captureBtn.disabled = true;
 
-            let countdown = 3;
+            const countdownDuration = parseInt(document.getElementById('countdown-select').value);
+            let countdown = countdownDuration;
             const countdownElement = document.getElementById('countdown');
             countdownElement.style.display = 'block';
             countdownElement.innerText = `Ready? ${countdown}`;
@@ -518,12 +389,12 @@
             });
 
             countdownElement.style.display = 'none';
-            await takePhotos();
+            await takePhotos(countdownDuration);
             captureBtn.disabled = false;
             isCapturing = false;
         }
 
-        async function takePhotos() {
+        async function takePhotos(countdownDuration) {
             const video = document.getElementById('video');
             const photoContainer = document.getElementById('photo-container');
             const countdownElement = document.getElementById('countdown');
@@ -532,7 +403,7 @@
 
             for (let i = 0; i < photoCount; i++) {
                 countdownElement.style.display = 'block';
-                let photoCountdown = 3;
+                let photoCountdown = countdownDuration;
 
                 await new Promise(resolve => {
                     countdownElement.innerText = `${i + 1}/${photoCount}: ${photoCountdown}`;
@@ -547,7 +418,7 @@
                 });
 
                 countdownElement.style.display = 'none';
-                
+
                 const canvas = document.createElement('canvas');
                 canvas.width = 200;
                 canvas.height = 200;
@@ -563,10 +434,13 @@
                 const img = document.createElement('img');
                 img.src = imgData;
                 img.classList.add('photo-frame');
+                img.dataset.index = i;
                 photoContainer.appendChild(img);
             }
 
             document.getElementById('frame-selection').style.display = 'block';
+            document.getElementById('layout-selection').style.display = 'block';
+            document.getElementById('action-buttons').style.display = 'block';
             document.getElementById('effect-selection').style.display = 'none';
         }
 
@@ -660,40 +534,118 @@
         }
 
         function selectFrame(event, frameColor, style = '') {
-            event.preventDefault(); // Prevent any default behavior
+            event.preventDefault();
             selectedFrame = frameColor;
             selectedFrameStyle = style;
             const frames = document.querySelectorAll('.frame');
             frames.forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
-            redrawPhotosWithFrame();
+            redrawPhotos();
         }
 
-        function redrawPhotosWithFrame() {
-            const photoContainer = document.getElementById('photo-container');
-            const fragment = document.createDocumentFragment(); // Use a fragment to avoid multiple DOM updates
+        function selectLayout(layout) {
+            selectedLayout = layout;
+            const buttons = document.querySelectorAll('.layout-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-layout="${layout}"]`).classList.add('selected');
+            document.getElementById('background-selection').style.display = layout === 'polaroid' ? 'block' : 'none';
+            if (layout !== 'polaroid') {
+                selectedBackgroundType = null;
+                selectedBackgroundValue = null;
+                backgroundImage = null;
+            }
+            redrawPhotos();
+        }
 
-            fullResImages.forEach(imgData => {
-                const img = new Image();
-                img.src = imgData;
+        function selectBackground(type, value) {
+            if (selectedLayout !== 'polaroid') return;
+            selectedBackgroundType = type;
+            selectedBackgroundValue = value;
+            const options = document.querySelectorAll('.background-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            event.target.classList.add('selected');
+
+            if (type === 'image') {
+                backgroundImage = new Image();
+                backgroundImage.crossOrigin = 'anonymous';
+                backgroundImage.src = value;
+                backgroundImage.onload = () => redrawPhotos();
+            } else {
+                backgroundImage = null;
+                redrawPhotos();
+            }
+        }
+
+        function uploadBackground(event) {
+            if (selectedLayout !== 'polaroid') return;
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedBackgroundType = 'image';
+                    selectedBackgroundValue = e.target.result;
+                    backgroundImage = new Image();
+                    backgroundImage.crossOrigin = 'anonymous';
+                    backgroundImage.src = selectedBackgroundValue;
+                    backgroundImage.onload = () => {
+                        const options = document.querySelectorAll('.background-option');
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        event.target.parentElement.classList.add('selected');
+                        redrawPhotos();
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function redrawPhotos() {
+            const photoContainer = document.getElementById('photo-container');
+            photoContainer.innerHTML = ''; // Clear the container to ensure fresh layout
+            const fragment = document.createDocumentFragment();
+
+            fullResImages.forEach((imgData, index) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = 200;
                 canvas.height = 200;
                 const ctx = canvas.getContext('2d');
 
-                ctx.filter = currentEffect;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                ctx.filter = 'none';
-                applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+                const img = new Image();
+                img.src = imgData;
+                img.onload = () => {
+                    ctx.filter = currentEffect;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.filter = 'none';
+                    applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
 
-                const newImg = document.createElement('img');
-                newImg.src = canvas.toDataURL('image/png');
-                newImg.classList.add('photo-frame');
-                fragment.appendChild(newImg); // Add to fragment instead of directly to DOM
+                    const newImg = document.createElement('img');
+                    newImg.src = canvas.toDataURL('image/png');
+                    newImg.classList.add('photo-frame');
+                    newImg.dataset.index = index;
+                    fragment.appendChild(newImg);
+
+                    // Append fragment only after all images are processed
+                    if (index === fullResImages.length - 1) {
+                        if (selectedLayout === 'vertical') {
+                            photoContainer.appendChild(fragment);
+                        } else if (selectedLayout === 'grid') {
+                            const gridDiv = document.createElement('div');
+                            gridDiv.style.display = 'grid';
+                            gridDiv.style.gridTemplateColumns = '1fr 1fr';
+                            gridDiv.style.gap = '10px';
+                            Array.from(fragment.children).forEach(img => gridDiv.appendChild(img));
+                            photoContainer.appendChild(gridDiv);
+                        } else if (selectedLayout === 'polaroid') {
+                            Array.from(fragment.children).forEach((img, i) => {
+                                const polaroidDiv = document.createElement('div');
+                                polaroidDiv.classList.add('polaroid-stack');
+                                polaroidDiv.style.transform = `rotate(${i * 5 - 7.5}deg)`;
+                                polaroidDiv.appendChild(img);
+                                photoContainer.appendChild(polaroidDiv);
+                            });
+                        }
+                    }
+                };
             });
-
-            photoContainer.innerHTML = ''; // Clear container once
-            photoContainer.appendChild(fragment); // Append all images at once
         }
 
         function retakePhotos() {
@@ -701,6 +653,9 @@
             photoContainer.innerHTML = '';
             fullResImages = [];
             document.getElementById('frame-selection').style.display = 'none';
+            document.getElementById('layout-selection').style.display = 'none';
+            document.getElementById('background-selection').style.display = 'none';
+            document.getElementById('action-buttons').style.display = 'none';
             document.getElementById('effect-selection').style.display = 'block';
             document.getElementById('captureBtn').disabled = false;
             isCapturing = false;
@@ -721,65 +676,186 @@
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = imgWidth + (frameThickness * 2);
-            canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
 
-            let y = frameThickness;
-            const imageObjects = images.map(src => {
-                const image = new Image();
-                image.crossOrigin = 'anonymous';
-                image.src = src;
-                return image;
-            });
+            if (selectedLayout === 'vertical') {
+                canvas.width = imgWidth + (frameThickness * 2);
+                canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
 
-            Promise.all(imageObjects.map(img => new Promise(resolve => img.onload = resolve)))
-                .then(() => {
-                    imageObjects.forEach((image, index) => {
-                        ctx.filter = currentEffect;
-                        ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
-                        ctx.filter = 'none';
-                        applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight);
-
-                        if (index === images.length - 1 && selectedFrame) {
-                            ctx.lineWidth = frameThickness * 2;
-                            ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
-                            ctx.beginPath();
-                            ctx.moveTo(0, 0);
-                            ctx.lineTo(canvas.width, 0);
-                            ctx.stroke();
-                            ctx.beginPath();
-                            ctx.moveTo(0, 0);
-                            ctx.lineTo(0, canvas.height);
-                            ctx.stroke();
-                            ctx.beginPath();
-                            ctx.moveTo(canvas.width, 0);
-                            ctx.lineTo(canvas.width, canvas.height);
-                            ctx.stroke();
-                            ctx.lineWidth = bottomFrameThickness * 2;
-                            ctx.beginPath();
-                            ctx.moveTo(0, canvas.height);
-                            ctx.lineTo(canvas.width, canvas.height);
-                            ctx.stroke();
-
-                            const currentDate = new Date();
-                            const dateTime = currentDate.toLocaleString();
-                            const watermarkText = `PhotoBooth ${dateTime}`;
-                            ctx.fillStyle = 'white';
-                            ctx.font = `12px Arial`;
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            const watermarkY = canvas.height - (bottomFrameThickness / 2);
-                            ctx.fillText(watermarkText, canvas.width / 2, watermarkY);
-                        }
-                        y += imgHeight + frameThickness;
-                    });
-
-                    finalCanvasData = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.href = finalCanvasData;
-                    link.download = `photobooth_${Date.now()}.png`;
-                    link.click();
+                let y = frameThickness;
+                const imageObjects = images.map(src => {
+                    const image = new Image();
+                    image.crossOrigin = 'anonymous';
+                    image.src = src;
+                    return image;
                 });
+
+                Promise.all(imageObjects.map(img => new Promise(resolve => img.onload = resolve)))
+                    .then(() => {
+                        imageObjects.forEach((image, index) => {
+                            ctx.filter = currentEffect;
+                            ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
+                            ctx.filter = 'none';
+                            applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight);
+
+                            if (index === images.length - 1 && selectedFrame) {
+                                ctx.lineWidth = frameThickness * 2;
+                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.beginPath();
+                                ctx.moveTo(0, 0);
+                                ctx.lineTo(canvas.width, 0);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.moveTo(0, 0);
+                                ctx.lineTo(0, canvas.height);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.moveTo(canvas.width, 0);
+                                ctx.lineTo(canvas.width, canvas.height);
+                                ctx.stroke();
+                                ctx.lineWidth = bottomFrameThickness * 2;
+                                ctx.beginPath();
+                                ctx.moveTo(0, canvas.height);
+                                ctx.lineTo(canvas.width, canvas.height);
+                                ctx.stroke();
+
+                                const currentDate = new Date();
+                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
+                                const watermarkText = `PhotoBooth ${dateTime}`;
+                                ctx.fillStyle = 'white';
+                                ctx.font = `12px Arial`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                const watermarkY = canvas.height - (bottomFrameThickness / 2);
+                                ctx.fillText(watermarkText, canvas.width / 2, watermarkY);
+                            }
+                            y += imgHeight + frameThickness;
+                        });
+
+                        finalCanvasData = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.href = finalCanvasData;
+                        link.download = `photobooth_${Date.now()}.png`;
+                        link.click();
+                    });
+            } else if (selectedLayout === 'grid') {
+                canvas.width = (imgWidth * 2) + (frameThickness * 3);
+                canvas.height = (imgHeight * 2) + (frameThickness * 3) + bottomFrameThickness;
+
+                const imageObjects = images.map(src => {
+                    const image = new Image();
+                    image.crossOrigin = 'anonymous';
+                    image.src = src;
+                    return image;
+                });
+
+                Promise.all(imageObjects.map(img => new Promise(resolve => img.onload = resolve)))
+                    .then(() => {
+                        const positions = [
+                            { x: frameThickness, y: frameThickness },
+                            { x: imgWidth + (frameThickness * 2), y: frameThickness },
+                            { x: frameThickness, y: imgHeight + (frameThickness * 2) },
+                            { x: imgWidth + (frameThickness * 2), y: imgHeight + (frameThickness * 2) }
+                        ];
+
+                        imageObjects.forEach((image, index) => {
+                            const { x, y } = positions[index];
+                            ctx.filter = currentEffect;
+                            ctx.drawImage(image, x, y, imgWidth, imgHeight);
+                            ctx.filter = 'none';
+                            applyFrameStyleToCanvas(ctx, x, y, imgWidth, imgHeight);
+
+                            if (index === images.length - 1 && selectedFrame) {
+                                ctx.lineWidth = frameThickness * 2;
+                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.strokeRect(0, 0, canvas.width, canvas.height - bottomFrameThickness);
+                                ctx.lineWidth = bottomFrameThickness * 2;
+                                ctx.beginPath();
+                                ctx.moveTo(0, canvas.height);
+                                ctx.lineTo(canvas.width, canvas.height);
+                                ctx.stroke();
+
+                                const currentDate = new Date();
+                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
+                                const watermarkText = `PhotoBooth ${dateTime}`;
+                                ctx.fillStyle = 'white';
+                                ctx.font = `12px Arial`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                const watermarkY = canvas.height - (bottomFrameThickness / 2);
+                                ctx.fillText(watermarkText, canvas.width / 2, watermarkY);
+                            }
+                        });
+
+                        finalCanvasData = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.href = finalCanvasData;
+                        link.download = `photobooth_${Date.now()}.png`;
+                        link.click();
+                    });
+            } else if (selectedLayout === 'polaroid') {
+                canvas.width = imgWidth + (frameThickness * 4) + 40;
+                canvas.height = imgHeight + bottomFrameThickness + 480; // Adjusted for more spacing
+
+                if (selectedBackgroundType === 'solid') {
+                    ctx.fillStyle = selectedBackgroundValue;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (selectedBackgroundType === 'image' && backgroundImage) {
+                    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+                } else {
+                    ctx.fillStyle = '#fce7f3'; // Default background
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                const imageObjects = images.map(src => {
+                    const image = new Image();
+                    image.crossOrigin = 'anonymous';
+                    image.src = src;
+                    return image;
+                });
+
+                Promise.all(imageObjects.map(img => new Promise(resolve => img.onload = resolve)))
+                    .then(() => {
+                        let y = frameThickness;
+                        imageObjects.forEach((image, index) => {
+                            const tiltAngle = (index * 5 - 7.5) * Math.PI / 180;
+                            ctx.save();
+                            ctx.translate(canvas.width / 2, y + (imgHeight / 2));
+                            ctx.rotate(tiltAngle);
+
+                            ctx.filter = currentEffect;
+                            ctx.drawImage(image, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight);
+                            ctx.filter = 'none';
+                            applyFrameStyleToCanvas(ctx, -imgWidth / 2, -imgHeight / 2, imgWidth, imgHeight);
+                            ctx.restore();
+
+                            if (index === images.length - 1 && selectedFrame) {
+                                ctx.lineWidth = bottomFrameThickness * 2;
+                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.beginPath();
+                                ctx.moveTo(0, canvas.height);
+                                ctx.lineTo(canvas.width, canvas.height);
+                                ctx.stroke();
+
+                                const currentDate = new Date();
+                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
+                                const watermarkText = `PhotoBooth ${dateTime}`;
+                                ctx.fillStyle = 'white';
+                                ctx.font = `12px Arial`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                const watermarkY = canvas.height - (bottomFrameThickness / 2);
+                                ctx.fillText(watermarkText, canvas.width / 2, watermarkY);
+                            }
+                            y += 160; // Adjusted for more spacing
+                        });
+
+                        finalCanvasData = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.href = finalCanvasData;
+                        link.download = `photobooth_${Date.now()}.png`;
+                        link.click();
+                    });
+            }
         }
 
         function sharePhotos() {
