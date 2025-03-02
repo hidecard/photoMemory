@@ -389,7 +389,6 @@
 
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Cute Frame</h4>
-        <!-- Top Row: 10 Color Frames -->
         <div class="frame-container">
             <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div>
             <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div>
@@ -402,7 +401,6 @@
             <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame('#DDA0DD')"></div>
             <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('#FFB6C1')"></div>
         </div>
-        <!-- Bottom Row: 10 Pattern Frames -->
         <div class="frame-container">
             <div class="frame frame-white" onclick="selectFrame('#ffffff', 'dashed')"></div>
             <div class="frame frame-stars" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'stars')"></div>
@@ -415,6 +413,14 @@
             <div class="frame frame-clouds" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'clouds')"></div>
             <div class="frame frame-cats" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'cats')"></div>
         </div>
+        <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()">
+            Retake Photos
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/retry.png" alt="Retake Icon">
+        </button>
+        <button class="btn btn-custom mt-3" onclick="sharePhotos()">
+            Share Photos
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/share.png" alt="Share Icon">
+        </button>
         <button class="btn btn-success mt-3 btn-custom" onclick="downloadPhotos()">
             Save Photos
             <img src="https://img.icons8.com/ios-filled/20/ff6f91/download.png" alt="Download Icon">
@@ -424,6 +430,7 @@
     <script>
         let selectedFrame = '';
         let selectedFrameStyle = '';
+        let finalCanvasData = null;
         const photoCount = 4;
         let videoStream = null;
         let isCapturing = false;
@@ -512,7 +519,6 @@
                 const ctx = canvas.getContext('2d');
 
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
                 applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
 
                 const imgData = canvas.toDataURL('image/png');
@@ -644,6 +650,15 @@
             });
         }
 
+        function retakePhotos() {
+            const photoContainer = document.getElementById('photo-container');
+            photoContainer.innerHTML = '';
+            fullResImages = [];
+            document.getElementById('frame-selection').style.display = 'none';
+            document.getElementById('captureBtn').disabled = false;
+            isCapturing = false;
+        }
+
         function downloadPhotos() {
             const images = fullResImages;
             if (images.length === 0) {
@@ -709,11 +724,52 @@
                         y += imgHeight + frameThickness;
                     });
 
+                    finalCanvasData = canvas.toDataURL('image/png');
                     const link = document.createElement('a');
-                    link.href = canvas.toDataURL('image/png');
+                    link.href = finalCanvasData;
                     link.download = `photobooth_${Date.now()}.png`;
                     link.click();
                 });
+        }
+
+        function sharePhotos() {
+            if (!finalCanvasData) {
+                alert('Please save your photos first!');
+                return;
+            }
+
+            fetch(finalCanvasData)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], `photobooth_${Date.now()}.png`, { type: 'image/png' });
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'My PhotoBooth Strip',
+                            text: 'Check out my cute PhotoBooth pictures!',
+                            files: [file]
+                        }).catch(err => {
+                            console.error('Share failed:', err);
+                            fallbackShare(file);
+                        });
+                    } else {
+                        fallbackShare(file);
+                    }
+                });
+        }
+
+        function fallbackShare(file) {
+            const url = URL.createObjectURL(file);
+            const shareText = 'Check out my PhotoBooth strip! Download it here: ' + url;
+            
+            const shareWindow = window.open('', '_blank', 'width=400,height=300');
+            shareWindow.document.write(`
+                <h3>Share Your Photos</h3>
+                <p>Copy this link to share:</p>
+                <input type="text" value="${shareText}" style="width: 100%;" readonly>
+                <p>Or download and share manually:</p>
+                <a href="${url}" download="photobooth.png">Download</a>
+            `);
         }
     </script>
 </body>
