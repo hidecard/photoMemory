@@ -48,6 +48,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             font-family: 'Courier New', cursive;
             animation: pulse 0.5s infinite alternate;
+            z-index: 10; /* Ensure countdown is above video */
         }
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
@@ -413,28 +414,28 @@
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Cute Frame</h4>
         <div class="frame-container">
-            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame('#FF6F61')"></div>
-            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame('#FFD700')"></div>
-            <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame('#FF69B4')"></div>
-            <div class="frame" style="background-color: #87CEEB;" onclick="selectFrame('#87CEEB')"></div>
-            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame('#FFA07A')"></div>
-            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame('#DA70D6')"></div>
-            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame('#FFC0CB')"></div>
-            <div class="frame" style="background-color: #F08080;" onclick="selectFrame('#F08080')"></div>
-            <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame('#DDA0DD')"></div>
-            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame('#FFB6C1')"></div>
+            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame(event, '#FF6F61')"></div>
+            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame(event, '#FFD700')"></div>
+            <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame(event, '#FF69B4')"></div>
+            <div class="frame" style="background-color: #87CEEB;" onclick="selectFrame(event, '#87CEEB')"></div>
+            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame(event, '#FFA07A')"></div>
+            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame(event, '#DA70D6')"></div>
+            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame(event, '#FFC0CB')"></div>
+            <div class="frame" style="background-color: #F08080;" onclick="selectFrame(event, '#F08080')"></div>
+            <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame(event, '#DDA0DD')"></div>
+            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame(event, '#FFB6C1')"></div>
         </div>
         <div class="frame-container">
-            <div class="frame frame-white" onclick="selectFrame('#ffffff', 'dashed')"></div>
-            <div class="frame frame-stars" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'stars')"></div>
-            <div class="frame frame-hearts" style="background-color: #ffb6c1;" onclick="selectFrame('#ffb6c1', 'hearts')"></div>
-            <div class="frame frame-sunflowers" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'sunflowers')"></div>
-            <div class="frame frame-flowers" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'flowers')"></div>
-            <div class="frame frame-bows" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'bows')"></div>
-            <div class="frame frame-bunnies" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'bunnies')"></div>
-            <div class="frame frame-waves" onclick="selectFrame('#ff9cc7', 'waves')"></div>
-            <div class="frame frame-clouds" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'clouds')"></div>
-            <div class="frame frame-cats" style="background-color: #ffffff;" onclick="selectFrame('#ffffff', 'cats')"></div>
+            <div class="frame frame-white" onclick="selectFrame(event, '#ffffff', 'dashed')"></div>
+            <div class="frame frame-stars" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'stars')"></div>
+            <div class="frame frame-hearts" style="background-color: #ffb6c1;" onclick="selectFrame(event, '#ffb6c1', 'hearts')"></div>
+            <div class="frame frame-sunflowers" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'sunflowers')"></div>
+            <div class="frame frame-flowers" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'flowers')"></div>
+            <div class="frame frame-bows" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'bows')"></div>
+            <div class="frame frame-bunnies" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'bunnies')"></div>
+            <div class="frame frame-waves" onclick="selectFrame(event, '#ff9cc7', 'waves')"></div>
+            <div class="frame frame-clouds" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'clouds')"></div>
+            <div class="frame frame-cats" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'cats')"></div>
         </div>
         <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()">
             Retake Photos
@@ -525,11 +526,11 @@
         async function takePhotos() {
             const video = document.getElementById('video');
             const photoContainer = document.getElementById('photo-container');
+            const countdownElement = document.getElementById('countdown');
             photoContainer.innerHTML = '';
             fullResImages = [];
 
             for (let i = 0; i < photoCount; i++) {
-                const countdownElement = document.getElementById('countdown');
                 countdownElement.style.display = 'block';
                 let photoCountdown = 3;
 
@@ -658,7 +659,8 @@
             }
         }
 
-        function selectFrame(frameColor, style = '') {
+        function selectFrame(event, frameColor, style = '') {
+            event.preventDefault(); // Prevent any default behavior that might cause reload
             selectedFrame = frameColor;
             selectedFrameStyle = style;
             document.querySelectorAll('.frame').forEach(frame => frame.classList.remove('selected'));
@@ -666,29 +668,34 @@
             redrawPhotosWithFrame();
         }
 
-        function redrawPhotosWithFrame() {
+        async function redrawPhotosWithFrame() {
             const photoContainer = document.getElementById('photo-container');
-            photoContainer.innerHTML = '';
-            fullResImages.forEach(imgData => {
-                const img = new Image();
-                img.src = imgData;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 200;
-                    canvas.height = 200;
-                    const ctx = canvas.getContext('2d');
-                    
-                    ctx.filter = currentEffect;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    ctx.filter = 'none';
-                    applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+            photoContainer.innerHTML = ''; // Clear container first
+            const promises = fullResImages.map(imgData => {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.src = imgData;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 200;
+                        canvas.height = 200;
+                        const ctx = canvas.getContext('2d');
+                        
+                        ctx.filter = currentEffect;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        ctx.filter = 'none';
+                        applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
 
-                    const newImg = document.createElement('img');
-                    newImg.src = canvas.toDataURL('image/png');
-                    newImg.classList.add('photo-frame');
-                    photoContainer.appendChild(newImg);
-                };
+                        const newImg = document.createElement('img');
+                        newImg.src = canvas.toDataURL('image/png');
+                        newImg.classList.add('photo-frame');
+                        photoContainer.appendChild(newImg);
+                        resolve();
+                    };
+                });
             });
+
+            await Promise.all(promises); // Wait for all images to load and render
         }
 
         function retakePhotos() {
