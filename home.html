@@ -205,7 +205,7 @@
 </head>
 <body class="container py-5">
     <h2 class="text-center mb-4">
-        PhotoBooth<br><small style="font-size: 1rem;">Beta V 1.1</small>
+        PhotoBooth<br><small style="font-size: 1rem;">Beta V 1.0</small>
     </h2>
     <p class="text-center">You have a custom countdown for each shot—no retakes! This photobooth captures 4 pictures in a row, so strike your best pose and have fun!</p>
     <div id="setup-container" class="text-center">
@@ -304,7 +304,7 @@
     <div class="text-center mt-4" style="display:none;" id="action-buttons">
         <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()">
             Retake Photos
-            <img src="https://cdn-icons-png.flaticon.com/512/306/306473.png" alt="Retake Icon" style="width: 20px; height: 20px; filter: invert(1);">
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/available-updates.png" alt="Retake Icon">
         </button>
         <button class="btn btn-custom mt-3" onclick="sharePhotos()">
             Share Photos
@@ -540,7 +540,7 @@
             const frames = document.querySelectorAll('.frame');
             frames.forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
-            redrawPhotos();
+            updateFrames(); // Call optimized function instead of full redraw
         }
 
         function selectLayout(layout) {
@@ -554,7 +554,7 @@
                 selectedBackgroundValue = null;
                 backgroundImage = null;
             }
-            redrawPhotos();
+            redrawPhotos(); // Full redraw needed for layout change
         }
 
         function selectBackground(type, value) {
@@ -600,7 +600,7 @@
 
         function redrawPhotos() {
             const photoContainer = document.getElementById('photo-container');
-            photoContainer.innerHTML = ''; // Clear the container to ensure fresh layout
+            photoContainer.innerHTML = ''; // Clear the container
             const fragment = document.createDocumentFragment();
 
             fullResImages.forEach((imgData, index) => {
@@ -623,7 +623,6 @@
                     newImg.dataset.index = index;
                     fragment.appendChild(newImg);
 
-                    // Append fragment only after all images are processed
                     if (index === fullResImages.length - 1) {
                         if (selectedLayout === 'vertical') {
                             photoContainer.appendChild(fragment);
@@ -643,6 +642,32 @@
                                 photoContainer.appendChild(polaroidDiv);
                             });
                         }
+                    }
+                };
+            });
+        }
+
+        function updateFrames() {
+            const photoContainer = document.getElementById('photo-container');
+            const existingImages = photoContainer.querySelectorAll('.photo-frame');
+
+            fullResImages.forEach((imgData, index) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 200;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+
+                const img = new Image();
+                img.src = imgData;
+                img.onload = () => {
+                    ctx.filter = currentEffect;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.filter = 'none';
+                    applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
+
+                    const existingImg = existingImages[index];
+                    if (existingImg) {
+                        existingImg.src = canvas.toDataURL('image/png');
                     }
                 };
             });
