@@ -41,14 +41,15 @@
             transform: translate(-50%, -50%);
             font-size: 2.5rem;
             font-weight: bold;
-            color: #ffffff;
-            background: rgba(255, 111, 145, 0.4);
+            color: #333333;
+            background: rgba(255, 111, 145, 0.8);
             padding: 20px 30px;
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             font-family: 'Courier New', cursive;
             animation: pulse 0.5s infinite alternate;
             z-index: 10;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
@@ -171,7 +172,7 @@
             position: relative;
             width: 220px;
             height: 220px;
-            margin: -60px auto 0; /* Adjusted for more spacing */
+            margin: -60px auto 0;
         }
         .polaroid-stack:first-child {
             margin-top: 20px;
@@ -179,7 +180,7 @@
         @media (max-width: 768px) {
             .row { flex-direction: column; }
             #camera-container, #photo-container { padding: 10px; }
-            video { width: 100%; height: auto; }
+            video { width: 100%; max-width: 400px; height: auto; }
             .photo-frame { width: 150px; height: 150px; }
             .polaroid-stack { width: 165px; height: 165px; margin: -45px auto 0; }
             .polaroid-stack:first-child { margin-top: 15px; }
@@ -201,6 +202,17 @@
             .frame-container, .effect-container, .layout-container, .background-container { gap: 6px; }
             #countdown { font-size: 1.5rem; padding: 10px 15px; }
         }
+        @media (min-width: 1200px) {
+            .photo-frame { width: 250px; height: 250px; }
+            .btn-custom { font-size: 1.2rem; padding: 12px 30px; }
+            video { max-width: 500px; }
+        }
+        video {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body class="container py-5">
@@ -209,9 +221,9 @@
     </h2>
     <p class="text-center">You have a custom countdown for each shot—no retakes! This photobooth captures 4 pictures in a row, so strike your best pose and have fun!</p>
     <div id="setup-container" class="text-center">
-        <button class="btn btn-custom mt-3" onclick="startCamera()">
+        <button class="btn btn-custom mt-3" onclick="startCamera()" aria-label="Start camera to begin taking photos">
             Start Camera
-            <img src="https://img.icons8.com/ios-filled/20/ffffff/camera.png" alt="Camera Icon">
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/camera.png" alt="">
         </button>
     </div>
     
@@ -226,23 +238,23 @@
                 <option value="5">5</option>
             </select>
             <p id="countdown" style="display: none;"></p>
-            <video id="video" width="400" height="400" autoplay muted playsinline class="rounded"></video>
+            <video id="video" autoplay muted playsinline class="rounded"></video>
             <br>
-            <button class="btn btn-danger mt-2 btn-custom" onclick="capturePhotos()" disabled id="captureBtn">
+            <button class="btn btn-danger mt-2 btn-custom" onclick="capturePhotos()" disabled id="captureBtn" aria-label="Capture 4 photos with selected settings">
                 Capture Photos
-                <img src="https://img.icons8.com/ios-filled/20/ffffff/sparkling.png" alt="Sparkle Icon">
+                <img src="https://img.icons8.com/ios-filled/20/ffffff/sparkling.png" alt="">
             </button>
-            <button class="btn btn-flip mt-2 btn-custom" onclick="flipCamera()" id="flipBtn">
+            <button class="btn btn-flip mt-2 btn-custom" onclick="flipCamera()" id="flipBtn" aria-label="Switch between front and rear camera">
                 Flip Camera
-                <img src="https://img.icons8.com/ios-filled/20/ffffff/refresh.png" alt="Flip Icon">
+                <img src="https://img.icons8.com/ios-filled/20/ffffff/refresh.png" alt="">
             </button>
             <div id="effect-selection" class="mt-3" style="display: none;">
                 <h4>Choose an Effect</h4>
                 <div class="effect-container">
-                    <button class="effect-btn" onclick="applyEffect('none')">None</button>
-                    <button class="effect-btn" onclick="applyEffect('sepia(1)')">Sepia</button>
-                    <button class="effect-btn" onclick="applyEffect('grayscale(1)')">B&W</button>
-                    <button class="effect-btn" onclick="applyEffect('blur(2px)')">Blur</button>
+                    <button class="effect-btn" onclick="applyEffect('none')" aria-label="Apply no effect to photos">None</button>
+                    <button class="effect-btn" onclick="applyEffect('sepia(1)')" aria-label="Apply sepia effect to photos">Sepia</button>
+                    <button class="effect-btn" onclick="applyEffect('grayscale(1)')" aria-label="Apply black and white effect to photos">B&W</button>
+                    <button class="effect-btn" onclick="applyEffect('blur(2px)')" aria-label="Apply blur effect to photos">Blur</button>
                 </div>
             </div>
         </div>
@@ -282,9 +294,9 @@
     <div id="layout-selection" class="text-center mt-4" style="display:none;">
         <h4>Choose a Layout</h4>
         <div class="layout-container">
-            <button class="layout-btn selected" data-layout="vertical" onclick="selectLayout('vertical')">Vertical Strip</button>
-            <button class="layout-btn" data-layout="grid" onclick="selectLayout('grid')">2x2 Grid</button>
-            <button class="layout-btn" data-layout="polaroid" onclick="selectLayout('polaroid')">Polaroid Stack</button>
+            <button class="layout-btn selected" data-layout="vertical" onclick="selectLayout('vertical')" aria-label="Arrange photos in a vertical strip">Vertical Strip</button>
+            <button class="layout-btn" data-layout="grid" onclick="selectLayout('grid')" aria-label="Arrange photos in a 2x2 grid">2x2 Grid</button>
+            <button class="layout-btn" data-layout="polaroid" onclick="selectLayout('polaroid')" aria-label="Arrange photos in a polaroid stack">Polaroid Stack</button>
         </div>
     </div>
 
@@ -292,27 +304,27 @@
         <h4>Swap Background</h4>
         <div class="background-container">
             <div class="background-option" style="background-color: #87CEEB;" onclick="selectBackground('solid', '#87CEEB')" title="Sky Blue"></div>
-            <div class="background-option" style="background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=50&h=50')" onclick="selectBackground('image', 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0')" title="Beach"></div>
-            <div class="background-option" style="background: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=50&h=50')" onclick="selectBackground('image', 'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986')" title="Stars"></div>
+            <div class="background-option" style="background: url('https://my-hosted-images.com/beach.jpg')" onclick="selectBackground('image', 'https://my-hosted-images.com/beach.jpg')" title="Beach"></div>
+            <div class="background-option" style="background: url('https://my-hosted-images.com/stars.jpg')" onclick="selectBackground('image', 'https://my-hosted-images.com/stars.jpg')" title="Stars"></div>
             <label class="background-option" style="background-color: #fff; border: 2px dashed #ff6f91; display: flex; align-items: center; justify-content: center;">
-                <input type="file" accept="image/*" onchange="uploadBackground(event)" style="display: none;">
+                <input type="file" accept="image/*" onchange="uploadBackground(event)" style="display: none;" aria-label="Upload custom background image">
                 <span>+</span>
             </label>
         </div>
     </div>
 
     <div class="text-center mt-4" style="display:none;" id="action-buttons">
-        <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()">
+        <button class="btn btn-danger mt-3 btn-custom" onclick="retakePhotos()" aria-label="Retake all photos">
             Retake Photos
-            <img src="https://img.icons8.com/ios-filled/20/ffffff/available-updates.png" alt="Retake Icon">
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/available-updates.png" alt="">
         </button>
-        <button class="btn btn-custom mt-3" onclick="sharePhotos()">
+        <button class="btn btn-custom mt-3" onclick="sharePhotos()" aria-label="Share photo strip">
             Share Photos
-            <img src="https://img.icons8.com/ios-filled/20/ffffff/share.png" alt="Share Icon">
+            <img src="https://img.icons8.com/ios-filled/20/ffffff/share.png" alt="">
         </button>
-        <button class="btn btn-success mt-3 btn-custom" onclick="downloadPhotos()">
+        <button class="btn btn-success mt-3 btn-custom" onclick="downloadPhotos()" aria-label="Download photo strip">
             Save Photos
-            <img src="https://img.icons8.com/ios-filled/20/ff6f91/download.png" alt="Download Icon">
+            <img src="https://img.icons8.com/ios-filled/20/ff6f91/download.png" alt="">
         </button>
     </div>
 
@@ -330,6 +342,7 @@
         let isCapturing = false;
         let facingMode = 'user';
         let fullResImages = [];
+        let cachedCanvases = [];
 
         async function startCamera() {
             try {
@@ -362,7 +375,8 @@
             video.style.filter = effect;
             document.querySelectorAll('.effect-btn').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
-            redrawPhotos();
+            cachedCanvases = []; // Clear cache when effect changes
+            debouncedRedrawPhotos();
         }
 
         async function capturePhotos() {
@@ -400,6 +414,7 @@
             const countdownElement = document.getElementById('countdown');
             photoContainer.innerHTML = '';
             fullResImages = [];
+            cachedCanvases = [];
 
             for (let i = 0; i < photoCount; i++) {
                 countdownElement.style.display = 'block';
@@ -430,6 +445,7 @@
 
                 const imgData = canvas.toDataURL('image/png');
                 fullResImages.push(imgData);
+                cachedCanvases.push(canvas);
 
                 const img = document.createElement('img');
                 img.src = imgData;
@@ -540,7 +556,7 @@
             const frames = document.querySelectorAll('.frame');
             frames.forEach(frame => frame.classList.remove('selected'));
             event.target.classList.add('selected');
-            updateFrames(); // Call optimized function instead of full redraw
+            updateFrames();
         }
 
         function selectLayout(layout) {
@@ -554,7 +570,7 @@
                 selectedBackgroundValue = null;
                 backgroundImage = null;
             }
-            redrawPhotos(); // Full redraw needed for layout change
+            debouncedRedrawPhotos();
         }
 
         function selectBackground(type, value) {
@@ -569,10 +585,10 @@
                 backgroundImage = new Image();
                 backgroundImage.crossOrigin = 'anonymous';
                 backgroundImage.src = value;
-                backgroundImage.onload = () => redrawPhotos();
+                backgroundImage.onload = () => debouncedRedrawPhotos();
             } else {
                 backgroundImage = null;
-                redrawPhotos();
+                debouncedRedrawPhotos();
             }
         }
 
@@ -591,7 +607,7 @@
                         const options = document.querySelectorAll('.background-option');
                         options.forEach(opt => opt.classList.remove('selected'));
                         event.target.parentElement.classList.add('selected');
-                        redrawPhotos();
+                        debouncedRedrawPhotos();
                     };
                 };
                 reader.readAsDataURL(file);
@@ -600,15 +616,19 @@
 
         function redrawPhotos() {
             const photoContainer = document.getElementById('photo-container');
-            photoContainer.innerHTML = ''; // Clear the container
-            const fragment = document.createDocumentFragment();
+            photoContainer.innerHTML = '';
 
+            if (cachedCanvases.length === fullResImages.length) {
+                updateLayout(cachedCanvases);
+                return;
+            }
+
+            cachedCanvases = [];
             fullResImages.forEach((imgData, index) => {
                 const canvas = document.createElement('canvas');
                 canvas.width = 200;
                 canvas.height = 200;
                 const ctx = canvas.getContext('2d');
-
                 const img = new Image();
                 img.src = imgData;
                 img.onload = () => {
@@ -616,35 +636,45 @@
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     ctx.filter = 'none';
                     applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
-
-                    const newImg = document.createElement('img');
-                    newImg.src = canvas.toDataURL('image/png');
-                    newImg.classList.add('photo-frame');
-                    newImg.dataset.index = index;
-                    fragment.appendChild(newImg);
-
-                    if (index === fullResImages.length - 1) {
-                        if (selectedLayout === 'vertical') {
-                            photoContainer.appendChild(fragment);
-                        } else if (selectedLayout === 'grid') {
-                            const gridDiv = document.createElement('div');
-                            gridDiv.style.display = 'grid';
-                            gridDiv.style.gridTemplateColumns = '1fr 1fr';
-                            gridDiv.style.gap = '10px';
-                            Array.from(fragment.children).forEach(img => gridDiv.appendChild(img));
-                            photoContainer.appendChild(gridDiv);
-                        } else if (selectedLayout === 'polaroid') {
-                            Array.from(fragment.children).forEach((img, i) => {
-                                const polaroidDiv = document.createElement('div');
-                                polaroidDiv.classList.add('polaroid-stack');
-                                polaroidDiv.style.transform = `rotate(${i * 5 - 7.5}deg)`;
-                                polaroidDiv.appendChild(img);
-                                photoContainer.appendChild(polaroidDiv);
-                            });
-                        }
+                    cachedCanvases[index] = canvas;
+                    if (cachedCanvases.length === fullResImages.length) {
+                        updateLayout(cachedCanvases);
                     }
                 };
             });
+        }
+
+        function updateLayout(canvases) {
+            const photoContainer = document.getElementById('photo-container');
+            photoContainer.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+
+            canvases.forEach((canvas, index) => {
+                const img = document.createElement('img');
+                img.src = canvas.toDataURL('image/png');
+                img.classList.add('photo-frame');
+                img.dataset.index = index;
+                fragment.appendChild(img);
+            });
+
+            if (selectedLayout === 'vertical') {
+                photoContainer.appendChild(fragment);
+            } else if (selectedLayout === 'grid') {
+                const gridDiv = document.createElement('div');
+                gridDiv.style.display = 'grid';
+                gridDiv.style.gridTemplateColumns = '1fr 1fr';
+                gridDiv.style.gap = '10px';
+                Array.from(fragment.children).forEach(img => gridDiv.appendChild(img));
+                photoContainer.appendChild(gridDiv);
+            } else if (selectedLayout === 'polaroid') {
+                Array.from(fragment.children).forEach((img, i) => {
+                    const polaroidDiv = document.createElement('div');
+                    polaroidDiv.classList.add('polaroid-stack');
+                    polaroidDiv.style.transform = `rotate(${i * 5 - 7.5}deg)`;
+                    polaroidDiv.appendChild(img);
+                    photoContainer.appendChild(polaroidDiv);
+                });
+            }
         }
 
         function updateFrames() {
@@ -656,7 +686,6 @@
                 canvas.width = 200;
                 canvas.height = 200;
                 const ctx = canvas.getContext('2d');
-
                 const img = new Image();
                 img.src = imgData;
                 img.onload = () => {
@@ -664,7 +693,7 @@
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     ctx.filter = 'none';
                     applyFrameStyleToCanvas(ctx, 0, 0, canvas.width, canvas.height);
-
+                    cachedCanvases[index] = canvas;
                     const existingImg = existingImages[index];
                     if (existingImg) {
                         existingImg.src = canvas.toDataURL('image/png');
@@ -677,6 +706,7 @@
             const photoContainer = document.getElementById('photo-container');
             photoContainer.innerHTML = '';
             fullResImages = [];
+            cachedCanvases = [];
             document.getElementById('frame-selection').style.display = 'none';
             document.getElementById('layout-selection').style.display = 'none';
             document.getElementById('background-selection').style.display = 'none';
@@ -743,11 +773,10 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const currentDate = new Date();
                                 const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
                                 const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
-                                ctx.font = `12px Arial`;
+                                ctx.font = '12px Arial';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 const watermarkY = canvas.height - (bottomFrameThickness / 2);
@@ -756,11 +785,15 @@
                             y += imgHeight + frameThickness;
                         });
 
-                        finalCanvasData = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = finalCanvasData;
-                        link.download = `photobooth_${Date.now()}.png`;
-                        link.click();
+                        try {
+                            finalCanvasData = canvas.toDataURL('image/png');
+                            const link = document.createElement('a');
+                            link.href = finalCanvasData;
+                            link.download = `photobooth_${Date.now()}.png`;
+                            link.click();
+                        } catch (e) {
+                            alert('Cannot download due to cross-origin restrictions. Try a different background.');
+                        }
                     });
             } else if (selectedLayout === 'grid') {
                 canvas.width = (imgWidth * 2) + (frameThickness * 3);
@@ -799,11 +832,10 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const currentDate = new Date();
                                 const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
                                 const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
-                                ctx.font = `12px Arial`;
+                                ctx.font = '12px Arial';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 const watermarkY = canvas.height - (bottomFrameThickness / 2);
@@ -811,15 +843,19 @@
                             }
                         });
 
-                        finalCanvasData = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = finalCanvasData;
-                        link.download = `photobooth_${Date.now()}.png`;
-                        link.click();
+                        try {
+                            finalCanvasData = canvas.toDataURL('image/png');
+                            const link = document.createElement('a');
+                            link.href = finalCanvasData;
+                            link.download = `photobooth_${Date.now()}.png`;
+                            link.click();
+                        } catch (e) {
+                            alert('Cannot download due to cross-origin restrictions. Try a different background.');
+                        }
                     });
             } else if (selectedLayout === 'polaroid') {
                 canvas.width = imgWidth + (frameThickness * 4) + 40;
-                canvas.height = imgHeight + bottomFrameThickness + 480; // Adjusted for more spacing
+                canvas.height = imgHeight + bottomFrameThickness + 480;
 
                 if (selectedBackgroundType === 'solid') {
                     ctx.fillStyle = selectedBackgroundValue;
@@ -827,7 +863,7 @@
                 } else if (selectedBackgroundType === 'image' && backgroundImage) {
                     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
                 } else {
-                    ctx.fillStyle = '#fce7f3'; // Default background
+                    ctx.fillStyle = '#fce7f3';
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                 }
 
@@ -861,24 +897,27 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const currentDate = new Date();
                                 const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
                                 const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
-                                ctx.font = `12px Arial`;
+                                ctx.font = '12px Arial';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 const watermarkY = canvas.height - (bottomFrameThickness / 2);
                                 ctx.fillText(watermarkText, canvas.width / 2, watermarkY);
                             }
-                            y += 160; // Adjusted for more spacing
+                            y += 160;
                         });
 
-                        finalCanvasData = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.href = finalCanvasData;
-                        link.download = `photobooth_${Date.now()}.png`;
-                        link.click();
+                        try {
+                            finalCanvasData = canvas.toDataURL('image/png');
+                            const link = document.createElement('a');
+                            link.href = finalCanvasData;
+                            link.download = `photobooth_${Date.now()}.png`;
+                            link.click();
+                        } catch (e) {
+                            alert('Cannot download due to cross-origin restrictions. Try a different background.');
+                        }
                     });
             }
         }
@@ -921,6 +960,21 @@
                 <p>Or download and share manually:</p>
                 <a href="${url}" download="photobooth.png">Download</a>
             `);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        const debouncedRedrawPhotos = debounce(redrawPhotos, 200);
+
+        function playShutterSound() {
+            const audio = new Audio('https://www.soundjay.com/buttons/camera-shutter-click-01.mp3');
+            audio.play().catch(err => console.log('Audio playback failed:', err));
         }
     </script>
 </body>
