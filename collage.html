@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collage Maker - PhotoBooth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fce7f3;
+            color: #8a4af3;
+        }
+        h2, h4 { color: #ff6f91; font-family: 'Courier New', cursive; }
+        h2 { font-size: 2rem; }
+        .btn-custom {
+            background-color: #ff9cc7;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #f78fb3;
+            transform: scale(1.05);
+        }
+        .shape-btn {
+            background-color: #ffb6c1;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            color: white;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.3s ease;
+        }
+        .shape-btn:hover { transform: scale(1.1); }
+        .shape-btn.selected { outline: 2px solid #ff6f91; transform: scale(1.1); }
+        #collage-preview { margin-top: 20px; }
+        .selection-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body class="container py-5">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffb6c1; border-radius: 25px; margin-bottom: 2rem;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html" style="color: #ffffff; font-family: 'Courier New', cursive;">PhotoBooth</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html" style="color: #ffffff;">Back to PhotoBooth</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: #ffffff;">Collage Maker</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Collage Maker Content -->
+    <h2 class="text-center mb-4">Collage Maker</h2>
+    <p class="text-center">Upload 1 to 15 photos and create your cute collage!</p>
+
+    <div class="text-center">
+        <input type="file" id="collage-upload" multiple accept="image/*" onchange="loadImages(event)" aria-label="Upload photos for collage">
+        <p id="image-count" class="mt-2">Selected: 0 images</p>
+    </div>
+
+    <div id="shape-selection" class="text-center mt-4" style="display: none;">
+        <h4>Choose a Shape</h4>
+        <div class="selection-container">
+            <button class="shape-btn selected" data-shape="square" onclick="selectShape('square')">Square</button>
+            <button class="shape-btn" data-shape="heart" onclick="selectShape('heart')">Heart</button>
+            <button class="shape-btn" data-shape="circle" onclick="selectShape('circle')">Circle</button>
+            <button class="shape-btn" data-shape="star" onclick="selectShape('star')">Star</button>
+            <button class="shape-btn" data-shape="diamond" onclick="selectShape('diamond')">Diamond</button>
+        </div>
+    </div>
+
+    <div id="collage-preview" class="text-center mt-4"></div>
+
+    <div class="text-center mt-4" id="action-buttons" style="display: none;">
+        <button class="btn btn-custom" onclick="downloadCollage()" aria-label="Download Collage">
+            Download Collage
+            <img src="https://img.icons8.com/ios-filled/20/ff6f91/download.png" alt="Download Icon">
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedImages = [];
+        let selectedShape = 'square';
+
+        function loadImages(event) {
+            const files = event.target.files;
+            selectedImages = [];
+            const imageCount = document.getElementById('image-count');
+
+            if (files.length > 15) {
+                alert('Please select up to 15 images only!');
+                return;
+            } else if (files.length < 1) {
+                alert('Please select at least 1 image!');
+                return;
+            }
+
+            imageCount.textContent = `Selected: ${files.length} images`;
+            document.getElementById('shape-selection').style.display = 'block';
+            document.getElementById('action-buttons').style.display = 'block';
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedImages.push(e.target.result);
+                    if (selectedImages.length === files.length) {
+                        renderCollage();
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function selectShape(shape) {
+            selectedShape = shape;
+            const buttons = document.querySelectorAll('.shape-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            document.querySelector(`[data-shape="${shape}"]`).classList.add('selected');
+            renderCollage();
+        }
+
+        function renderCollage() {
+            const preview = document.getElementById('collage-preview');
+            preview.innerHTML = '';
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const size = 600;
+            canvas.width = size;
+            canvas.height = size;
+
+            // Background
+            ctx.fillStyle = '#fce7f3';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Shape mask
+            ctx.beginPath();
+            if (selectedShape === 'square') {
+                ctx.rect(50, 50, size - 100, size - 100);
+            } else if (selectedShape === 'heart') {
+                const s = size / 2;
+                ctx.moveTo(s, s - 50);
+                ctx.bezierCurveTo(s + 75, s - 125, s + 150, s, s, s + 150);
+                ctx.bezierCurveTo(s - 150, s, s - 75, s - 125, s, s - 50);
+            } else if (selectedShape === 'circle') {
+                ctx.arc(size / 2, size / 2, (size - 100) / 2, 0, Math.PI * 2);
+            } else if (selectedShape === 'star') {
+                const r = (size - 100) / 2;
+                const cx = size / 2;
+                const cy = size / 2;
+                for (let i = 0; i < 10; i++) {
+                    const angle = (Math.PI / 5) * i;
+                    const radius = i % 2 === 0 ? r : r / 2;
+                    ctx.lineTo(cx + radius * Math.cos(angle), cy + radius * Math.sin(angle));
+                }
+            } else if (selectedShape === 'diamond') {
+                const s = size - 100;
+                ctx.moveTo(size / 2, 50);
+                ctx.lineTo(size - 50, size / 2);
+                ctx.lineTo(size / 2, size - 50);
+                ctx.lineTo(50, size / 2);
+            }
+            ctx.closePath();
+            ctx.clip();
+
+            // Arrange images
+            const imgCount = selectedImages.length;
+            const gridSize = Math.ceil(Math.sqrt(imgCount));
+            const imgWidth = (size - 100) / gridSize;
+            const imgHeight = imgWidth;
+
+            selectedImages.forEach((src, index) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                    const row = Math.floor(index / gridSize);
+                    const col = index % gridSize;
+                    const x = 50 + col * imgWidth;
+                    const y = 50 + row * imgHeight;
+                    ctx.drawImage(img, x, y, imgWidth, imgHeight);
+
+                    if (index === imgCount - 1) {
+                        preview.appendChild(canvas);
+                    }
+                };
+            });
+        }
+
+        function downloadCollage() {
+            const canvas = document.querySelector('#collage-preview canvas');
+            if (!canvas) {
+                alert('Please create a collage first!');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `collage_${Date.now()}.png`;
+            link.click();
+        }
+    </script>
+</body>
+</html>
