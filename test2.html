@@ -1310,8 +1310,8 @@
         
             const imgWidth = 200;
             const imgHeight = 200;
-            const frameThickness = 5;
-            const bottomFrameThickness = 60; // Increased from 50 to 60 for more space
+            const frameThickness = 2; // Reduced for thinner frames
+            const bottomFrameThickness = 60;
         
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -1322,10 +1322,15 @@
             const currentDateTime = new Date().toLocaleString(); // e.g., "3/3/2025, 12:00:00 PM"
         
             if (selectedLayout === 'vertical') {
-                canvas.width = imgWidth + (frameThickness * 2);
+                // Canvas includes space for frames between images
+                canvas.width = imgWidth + (frameThickness * 2); // Outer padding
                 canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
         
-                let y = frameThickness;
+                // Fill canvas background with #fce7f3
+                ctx.fillStyle = '#fce7f3';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+                let y = frameThickness; // Start with top padding
                 const imageObjects = images.map(src => {
                     const image = new Image();
                     image.crossOrigin = 'anonymous';
@@ -1339,49 +1344,33 @@
                             ctx.filter = currentEffect;
                             ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
                             ctx.filter = 'none';
-                            applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight);
+                            applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight); // Frame for each image
         
                             if (index === images.length - 1 && selectedFrame) {
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
-                                ctx.beginPath();
-                                ctx.moveTo(0, 0);
-                                ctx.lineTo(canvas.width, 0);
-                                ctx.stroke();
-                                ctx.beginPath();
-                                ctx.moveTo(0, 0);
-                                ctx.lineTo(0, canvas.height);
-                                ctx.stroke();
-                                ctx.beginPath();
-                                ctx.moveTo(canvas.width, 0);
-                                ctx.lineTo(canvas.width, canvas.height);
-                                ctx.stroke();
                                 ctx.lineWidth = bottomFrameThickness * 2;
+                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
                                 ctx.beginPath();
                                 ctx.moveTo(0, canvas.height);
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically with adjusted spacing)
+                                // Bottom Watermark
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
         
-                                // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
                                 }
         
-                                // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
         
-                                // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
                             }
-                            y += imgHeight + frameThickness;
+                            y += imgHeight + frameThickness; // Space for frame between images
                         });
         
                         finalCanvasData = canvas.toDataURL('image/png');
@@ -1392,8 +1381,13 @@
                     })
                     .catch(err => console.error('Error processing images for download:', err));
             } else if (selectedLayout === 'grid') {
-                canvas.width = (imgWidth * 2) + (frameThickness * 3);
-                canvas.height = (imgHeight * 2) + (frameThickness * 3) + bottomFrameThickness;
+                // Canvas includes space for frames between images
+                canvas.width = (imgWidth * 2) + frameThickness; // Space between columns
+                canvas.height = (imgHeight * 2) + frameThickness + bottomFrameThickness; // Space between rows
+        
+                // Fill canvas background with #fce7f3
+                ctx.fillStyle = '#fce7f3';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
         
                 const imageObjects = images.map(src => {
                     const image = new Image();
@@ -1405,10 +1399,10 @@
                 Promise.all(imageObjects.map(img => new Promise(resolve => { img.onload = resolve; img.onerror = resolve; })))
                     .then(() => {
                         const positions = [
-                            { x: frameThickness, y: frameThickness },
-                            { x: imgWidth + (frameThickness * 2), y: frameThickness },
-                            { x: frameThickness, y: imgHeight + (frameThickness * 2) },
-                            { x: imgWidth + (frameThickness * 2), y: imgHeight + (frameThickness * 2) }
+                            { x: 0, y: 0 }, // Top-left
+                            { x: imgWidth + frameThickness, y: 0 }, // Top-right
+                            { x: 0, y: imgHeight + frameThickness }, // Bottom-left
+                            { x: imgWidth + frameThickness, y: imgHeight + frameThickness } // Bottom-right
                         ];
         
                         imageObjects.forEach((image, index) => {
@@ -1416,36 +1410,31 @@
                             ctx.filter = currentEffect;
                             ctx.drawImage(image, x, y, imgWidth, imgHeight);
                             ctx.filter = 'none';
-                            applyFrameStyleToCanvas(ctx, x, y, imgWidth, imgHeight);
+                            applyFrameStyleToCanvas(ctx, x, y, imgWidth, imgHeight); // Frame for each image
         
                             if (index === images.length - 1 && selectedFrame) {
-                                ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
-                                ctx.strokeRect(0, 0, canvas.width, canvas.height - bottomFrameThickness);
                                 ctx.lineWidth = bottomFrameThickness * 2;
+                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
                                 ctx.beginPath();
                                 ctx.moveTo(0, canvas.height);
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically with adjusted spacing)
+                                // Bottom Watermark
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
         
-                                // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
                                 }
         
-                                // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
         
-                                // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
                             }
                         });
         
@@ -1500,24 +1489,20 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically with adjusted spacing)
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
         
-                                // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
                                 }
         
-                                // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
         
-                                // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
                             }
                             y += 160;
                         });
