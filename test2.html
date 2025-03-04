@@ -1310,7 +1310,7 @@
         
             const imgWidth = 200;
             const imgHeight = 200;
-            const frameThickness = 2; // Reduced for thinner frames
+            const frameThickness = 2; // Thinner frames
             const bottomFrameThickness = 60;
         
             const canvas = document.createElement('canvas');
@@ -1322,15 +1322,15 @@
             const currentDateTime = new Date().toLocaleString(); // e.g., "3/3/2025, 12:00:00 PM"
         
             if (selectedLayout === 'vertical') {
-                // Canvas includes space for frames between images
-                canvas.width = imgWidth + (frameThickness * 2); // Outer padding
-                canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
+                // Canvas tightly fits images with frames between them
+                canvas.width = imgWidth; // No extra padding on sides
+                canvas.height = (imgHeight * images.length) + (frameThickness * (images.length - 1)) + bottomFrameThickness;
         
                 // Fill canvas background with #fce7f3
                 ctx.fillStyle = '#fce7f3';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-                let y = frameThickness; // Start with top padding
+                let y = 0; // Start at top with no padding
                 const imageObjects = images.map(src => {
                     const image = new Image();
                     image.crossOrigin = 'anonymous';
@@ -1342,9 +1342,9 @@
                     .then(() => {
                         imageObjects.forEach((image, index) => {
                             ctx.filter = currentEffect;
-                            ctx.drawImage(image, frameThickness, y, imgWidth, imgHeight);
+                            ctx.drawImage(image, 0, y, imgWidth, imgHeight);
                             ctx.filter = 'none';
-                            applyFrameStyleToCanvas(ctx, frameThickness, y, imgWidth, imgHeight); // Frame for each image
+                            applyFrameStyleToCanvas(ctx, 0, y, imgWidth, imgHeight); // Frame for each image
         
                             if (index === images.length - 1 && selectedFrame) {
                                 ctx.lineWidth = bottomFrameThickness * 2;
@@ -1370,7 +1370,7 @@
                                 ctx.font = '8px Arial';
                                 ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
                             }
-                            y += imgHeight + frameThickness; // Space for frame between images
+                            y += imgHeight + (index < images.length - 1 ? frameThickness : 0); // Frame only between images
                         });
         
                         finalCanvasData = canvas.toDataURL('image/png');
@@ -1381,9 +1381,9 @@
                     })
                     .catch(err => console.error('Error processing images for download:', err));
             } else if (selectedLayout === 'grid') {
-                // Canvas includes space for frames between images
-                canvas.width = (imgWidth * 2) + frameThickness; // Space between columns
-                canvas.height = (imgHeight * 2) + frameThickness + bottomFrameThickness; // Space between rows
+                // Canvas tightly fits 2x2 grid with frames between images
+                canvas.width = (imgWidth * 2) + frameThickness; // Frame between columns
+                canvas.height = (imgHeight * 2) + frameThickness + bottomFrameThickness; // Frame between rows
         
                 // Fill canvas background with #fce7f3
                 ctx.fillStyle = '#fce7f3';
