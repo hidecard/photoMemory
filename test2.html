@@ -955,178 +955,185 @@
         function applyFrameStyleToCanvas(ctx, x, y, width, height) {
             if (selectedFrame) {
                 const frameThickness = 5;
+                const innerX = x + frameThickness;
+                const innerY = y + frameThickness;
+                const innerWidth = width - frameThickness * 2;
+                const innerHeight = height - frameThickness * 2;
+                const stickerOffset = 15; // Increased from 10 to 15 for more spacing
+        
+                // Draw the frame border
                 if (selectedFrameStyle === 'dashed') {
                     ctx.setLineDash([10, 5]);
                     ctx.strokeStyle = '#ff6f91';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.setLineDash([]);
                 } else if (selectedFrameStyle === 'stars') {
                     ctx.strokeStyle = '#ff6f91';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff6f91';
                     ctx.font = '20px Arial';
-                    ctx.fillText('★', x + 10, y + 20);
-                    ctx.fillText('★', x + width - 20, y + height - 10);
+                    ctx.fillText('★', innerX + stickerOffset, innerY + 20); // Left sticker
+                    ctx.fillText('★', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset); // Right sticker, moved left
                 } else if (selectedFrameStyle === 'hearts') {
                     ctx.strokeStyle = '#ff69b4';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff69b4';
                     ctx.font = '20px Arial';
-                    ctx.fillText('♥', x + 10, y + 20);
-                    ctx.fillText('♥', x + width - 20, y + height - 10);
+                    ctx.fillText('♥', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('♥', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'sunflowers') {
                     ctx.strokeStyle = '#FFD700';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#FFD700';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🌻', x + 10, y + 20);
-                    ctx.fillText('🌻', x + width - 20, y + height - 10);
+                    ctx.fillText('🌻', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🌻', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'flowers') {
                     ctx.strokeStyle = '#ff9cc7';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff9cc7';
                     ctx.font = '20px Arial';
-                    ctx.fillText('❀', x + 10, y + 20);
-                    ctx.fillText('❀', x + width - 20, y + height - 10);
+                    ctx.fillText('❀', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('❀', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'bows') {
                     ctx.strokeStyle = '#ff69b4';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff69b4';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🎀', x + 10, y + 20);
-                    ctx.fillText('🎀', x + width - 20, y + height - 10);
+                    ctx.fillText('🎀', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🎀', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'bunnies') {
                     ctx.strokeStyle = '#ffb6c1';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ffb6c1';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🐰', x + 10, y + 20);
-                    ctx.fillText('🐰', x + width - 20, y + height - 10);
+                    ctx.fillText('🐰', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🐰', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'waves') {
                     ctx.strokeStyle = '#ff9cc7';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.beginPath();
-                    ctx.moveTo(x + frameThickness, y + 20);
-                    ctx.quadraticCurveTo(x + width / 2, y - 10, x + width - frameThickness, y + 20);
+                    ctx.moveTo(innerX + frameThickness, innerY + 20);
+                    ctx.quadraticCurveTo(innerX + innerWidth / 2, innerY - 10, innerX + innerWidth - frameThickness, innerY + 20);
                     ctx.stroke();
                 } else if (selectedFrameStyle === 'clouds') {
                     ctx.strokeStyle = '#c3e6fc';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#c3e6fc';
                     ctx.font = '20px Arial';
-                    ctx.fillText('☁', x + 10, y + 20);
-                    ctx.fillText('☁', x + width - 20, y + height - 10);
+                    ctx.fillText('☁', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('☁', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'cats') {
                     ctx.strokeStyle = '#ff6f91';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff6f91';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🐾', x + 10, y + 20);
-                    ctx.fillText('🐾', x + width - 20, y + height - 10);
+                    ctx.fillText('🐾', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🐾', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'pusheen') {
                     ctx.strokeStyle = '#ffb6c1';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ffb6c1';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🐱', x + 10, y + 20);
-                    ctx.fillText('🍔', x + width - 20, y + height - 10);
+                    ctx.fillText('🐱', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🍔', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'rainbow') {
-                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    const gradient = ctx.createLinearGradient(innerX, innerY, innerX + innerWidth, innerY + innerHeight);
                     gradient.addColorStop(0, '#ff6f61');
                     gradient.addColorStop(0.33, '#ffd700');
                     gradient.addColorStop(0.66, '#ff69b4');
                     gradient.addColorStop(1, '#87ceeb');
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 } else if (selectedFrameStyle === 'diamonds') {
                     ctx.strokeStyle = '#ff6f91';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff6f91';
                     ctx.font = '20px Arial';
-                    ctx.fillText('♦', x + 10, y + 20);
-                    ctx.fillText('♦', x + width - 20, y + height - 10);
+                    ctx.fillText('♦', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('♦', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'moon') {
                     ctx.strokeStyle = '#87ceeb';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#87ceeb';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🌙', x + 10, y + 20);
-                    ctx.fillText('✨', x + width - 20, y + height - 10);
+                    ctx.fillText('🌙', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('✨', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'cherries') {
                     ctx.strokeStyle = '#ff6f61';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ff6f61';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🍒', x + 10, y + 20);
-                    ctx.fillText('🍒', x + width - 20, y + height - 10);
+                    ctx.fillText('🍒', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🍒', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'glitter') {
-                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    const gradient = ctx.createLinearGradient(innerX, innerY, innerX + innerWidth, innerY + innerHeight);
                     gradient.addColorStop(0, '#ff6f91');
                     gradient.addColorStop(1, '#ffd700');
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 } else if (selectedFrameStyle === 'pawprints') {
                     ctx.strokeStyle = '#da70d6';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#da70d6';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🐾', x + 10, y + 20);
-                    ctx.fillText('🐾', x + width - 20, y + height - 10);
+                    ctx.fillText('🐾', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🐾', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'candy') {
                     ctx.strokeStyle = '#ffc0cb';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ffc0cb';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🍬', x + 10, y + 20);
-                    ctx.fillText('🍭', x + width - 20, y + height - 10);
+                    ctx.fillText('🍬', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🍭', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'butterflies') {
                     ctx.strokeStyle = '#ffa07a';
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                     ctx.fillStyle = '#ffa07a';
                     ctx.font = '20px Arial';
-                    ctx.fillText('🦋', x + 10, y + 20);
-                    ctx.fillText('🦋', x + width - 20, y + height - 10);
+                    ctx.fillText('🦋', innerX + stickerOffset, innerY + 20);
+                    ctx.fillText('🦋', innerX + innerWidth - stickerOffset - 15, innerY + innerHeight - stickerOffset);
                 } else if (selectedFrameStyle === 'galaxy') {
-                    const gradient = ctx.createRadialGradient(x + width / 2, y + height / 2, 0, x + width / 2, y + height / 2, width / 2);
+                    const gradient = ctx.createRadialGradient(innerX + innerWidth / 2, innerY + innerHeight / 2, 0, innerX + innerWidth / 2, innerY + innerHeight / 2, innerWidth / 2);
                     gradient.addColorStop(0, '#2b1055');
                     gradient.addColorStop(1, '#7597de');
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 } else if (selectedFrameStyle === 'gradient') {
-                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    const gradient = ctx.createLinearGradient(innerX, innerY, innerX + innerWidth, innerY + innerHeight);
                     gradient.addColorStop(0, gradientStart);
                     gradient.addColorStop(1, gradientEnd);
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 } else if (selectedFrameStyle === 'solid') {
                     ctx.strokeStyle = selectedFrame;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 } else {
                     ctx.strokeStyle = selectedFrame;
                     ctx.lineWidth = frameThickness * 2;
-                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.strokeRect(innerX, innerY, innerWidth, innerHeight);
                 }
             }
         }
