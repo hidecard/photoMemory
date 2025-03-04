@@ -1311,7 +1311,7 @@
             const imgWidth = 200;
             const imgHeight = 200;
             const frameThickness = 5;
-            const bottomFrameThickness = 50; // Increased to fit stacked text
+            const bottomFrameThickness = 60; // Increased from 50 to 60 for more space
         
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -1362,7 +1362,7 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically in specified order)
+                                // Bottom Watermark (stacked vertically with adjusted spacing)
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
@@ -1370,16 +1370,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 35);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 20);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 5);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                             y += imgHeight + frameThickness;
                         });
@@ -1428,7 +1428,7 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically in specified order)
+                                // Bottom Watermark (stacked vertically with adjusted spacing)
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
@@ -1436,16 +1436,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 35);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 20);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 5);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                         });
         
@@ -1500,7 +1500,7 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
         
-                                // Bottom Watermark (stacked vertically in specified order)
+                                // Bottom Watermark (stacked vertically with adjusted spacing)
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
@@ -1508,16 +1508,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 35);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 20);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 5);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                             y += 160;
                         });
