@@ -318,6 +318,128 @@
             font-size: 20px;
         }
 
+        .frame-pusheen::after {
+            content: '🐱';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .frame-pusheen::before {
+            content: '🍔';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+
+        .frame-rainbow {
+            background: linear-gradient(90deg, #ff6f61, #ffd700, #ff69b4, #87ceeb);
+        }
+
+        .frame-diamonds::after {
+            content: '♦';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: #ff6f91;
+            font-size: 20px;
+        }
+        .frame-diamonds::before {
+            content: '♦';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: #ff6f91;
+            font-size: 20px;
+        }
+
+        .frame-moon::after {
+            content: '🌙';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .frame-moon::before {
+            content: '✨';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+
+        .frame-cherries::after {
+            content: '🍒';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .frame-cherries::before {
+            content: '🍒';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+
+        .frame-glitter {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="transparent" stroke="url(#glitter)" stroke-width="5"/><defs><linearGradient id="glitter" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff6f91;stop-opacity:1"/><stop offset="100%" style="stop-color:#ffd700;stop-opacity:1"/></linearGradient></defs></svg>');
+            background-size: cover;
+        }
+
+        .frame-pawprints::after {
+            content: '🐾';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: #da70d6;
+            font-size: 20px;
+        }
+        .frame-pawprints::before {
+            content: '🐾';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: #da70d6;
+            font-size: 20px;
+        }
+
+        .frame-candy::after {
+            content: '🍬';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .frame-candy::before {
+            content: '🍭';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+
+        .frame-butterflies::after {
+            content: '🦋';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 20px;
+        }
+        .frame-butterflies::before {
+            content: '🦋';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 20px;
+        }
+
+        .frame-galaxy {
+            background: radial-gradient(circle, #2b1055, #7597de);
+        }
+
         .effect-btn,
         .layout-btn {
             background-color: #ffb6c1;
@@ -344,6 +466,88 @@
             margin-top: 20px;
         }
 
+        /* Updated Color Picker Styles */
+        .color-picker-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            background: #ffb6c1;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-picker-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-picker-item label {
+            color: #ffffff;
+            font-family: 'Courier New', cursive;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+
+        .gradient-picker {
+            display: flex;
+            gap: 5px;
+        }
+
+        .gradient-picker input[type="color"] {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        #solid-color-picker {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        #solid-color-picker:hover,
+        .gradient-picker input[type="color"]:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Watermark Input Styles */
+        .watermark-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .watermark-container label {
+            color: #ff6f91;
+            font-family: 'Courier New', cursive;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        #watermark-input {
+            padding: 5px 10px;
+            border: 2px solid #ff6f91;
+            border-radius: 15px;
+            font-size: 1rem;
+            width: 200px;
+            outline: none;
+        }
+
         @media (max-width: 768px) {
             .row { flex-direction: column; }
             #camera-container, #photo-container { padding: 10px; }
@@ -357,6 +561,11 @@
             .frame, .background-option { width: 40px; height: 40px; margin: 4px; }
             .frame-container, .effect-container, .layout-container, .background-container { gap: 8px; }
             #countdown { font-size: 1.8rem; padding: 15px 20px; }
+            .color-picker-container { gap: 10px; padding: 8px 15px; }
+            .color-picker-item label { font-size: 0.95rem; }
+            #solid-color-picker { width: 35px; height: 35px; }
+            .gradient-picker input[type="color"] { width: 25px; height: 25px; }
+            #watermark-input { width: 150px; font-size: 0.9rem; }
         }
 
         @media (max-width: 576px) {
@@ -369,6 +578,11 @@
             .frame, .background-option { width: 35px; height: 35px; margin: 3px; }
             .frame-container, .effect-container, .layout-container, .background-container { gap: 6px; }
             #countdown { font-size: 1.5rem; padding: 10px 15px; }
+            .color-picker-container { flex-wrap: wrap; gap: 8px; padding: 6px 10px; }
+            .color-picker-item label { font-size: 0.85rem; }
+            #solid-color-picker { width: 30px; height: 30px; }
+            .gradient-picker input[type="color"] { width: 20px; height: 20px; }
+            #watermark-input { width: 120px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -440,19 +654,25 @@
 
     <div id="frame-selection" class="text-center mt-4" style="display:none;">
         <h4>Select a Cute Frame</h4>
-        <div class="frame-container">
-            <div class="frame" style="background-color: #FF6F61;" onclick="selectFrame(event, '#FF6F61')"></div>
-            <div class="frame" style="background-color: #FFD700;" onclick="selectFrame(event, '#FFD700')"></div>
-            <div class="frame" style="background-color: #FF69B4;" onclick="selectFrame(event, '#FF69B4')"></div>
-            <div class="frame" style="background-color: #87CEEB;" onclick="selectFrame(event, '#87CEEB')"></div>
-            <div class="frame" style="background-color: #FFA07A;" onclick="selectFrame(event, '#FFA07A')"></div>
-            <div class="frame" style="background-color: #DA70D6;" onclick="selectFrame(event, '#DA70D6')"></div>
-            <div class="frame" style="background-color: #FFC0CB;" onclick="selectFrame(event, '#FFC0CB')"></div>
-            <div class="frame" style="background-color: #F08080;" onclick="selectFrame(event, '#F08080')"></div>
-            <div class="frame" style="background-color: #DDA0DD;" onclick="selectFrame(event, '#DDA0DD')"></div>
-            <div class="frame" style="background-color: #FFB6C1;" onclick="selectFrame(event, '#FFB6C1')"></div>
+        <div class="color-picker-container">
+            <div class="color-picker-item">
+                <label for="solid-color-picker">Solid Color:</label>
+                <input type="color" id="solid-color-picker" value="#ff6f91" onchange="selectFrame(event, this.value, 'solid')">
+            </div>
+            <div class="color-picker-item">
+                <label>Gradient:</label>
+                <div class="gradient-picker">
+                    <input type="color" id="gradient-start" value="#ff6f91" onchange="selectGradientFrame()">
+                    <input type="color" id="gradient-end" value="#ffd700" onchange="selectGradientFrame()">
+                </div>
+            </div>
+        </div>
+        <div class="watermark-container">
+            <label for="watermark-input">Custom Watermark:</label>
+            <input type="text" id="watermark-input" placeholder="Enter your text" value="">
         </div>
         <div class="frame-container">
+            <!-- Existing Decorative Frames -->
             <div class="frame frame-white" onclick="selectFrame(event, '#ffffff', 'dashed')"></div>
             <div class="frame frame-stars" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'stars')"></div>
             <div class="frame frame-hearts" style="background-color: #ffb6c1;" onclick="selectFrame(event, '#ffb6c1', 'hearts')"></div>
@@ -463,6 +683,19 @@
             <div class="frame frame-waves" onclick="selectFrame(event, '#ff9cc7', 'waves')"></div>
             <div class="frame frame-clouds" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'clouds')"></div>
             <div class="frame frame-cats" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'cats')"></div>
+        </div>
+        <div class="frame-container">
+            <!-- 10 New Frames -->
+            <div class="frame frame-pusheen" style="background-color: #ffb6c1;" onclick="selectFrame(event, '#ffb6c1', 'pusheen')"></div>
+            <div class="frame frame-rainbow" onclick="selectFrame(event, 'linear-gradient(90deg, #ff6f61, #ffd700, #ff69b4, #87ceeb)', 'rainbow')"></div>
+            <div class="frame frame-diamonds" style="background-color: #ffffff;" onclick="selectFrame(event, '#ffffff', 'diamonds')"></div>
+            <div class="frame frame-moon" style="background-color: #87ceeb;" onclick="selectFrame(event, '#87ceeb', 'moon')"></div>
+            <div class="frame frame-cherries" style="background-color: #ff6f61;" onclick="selectFrame(event, '#ff6f61', 'cherries')"></div>
+            <div class="frame frame-glitter" onclick="selectFrame(event, '#ff6f91', 'glitter')"></div>
+            <div class="frame frame-pawprints" style="background-color: #da70d6;" onclick="selectFrame(event, '#da70d6', 'pawprints')"></div>
+            <div class="frame frame-candy" style="background-color: #ffc0cb;" onclick="selectFrame(event, '#ffc0cb', 'candy')"></div>
+            <div class="frame frame-butterflies" style="background-color: #ffa07a;" onclick="selectFrame(event, '#ffa07a', 'butterflies')"></div>
+            <div class="frame frame-galaxy" onclick="selectFrame(event, 'radial-gradient(circle, #2b1055, #7597de)', 'galaxy')"></div>
         </div>
     </div>
 
@@ -503,7 +736,7 @@
         </button>
     </div>
 
-    <!-- Modals (Feedback Modal Removed) -->
+    <!-- Modals -->
     <!-- About Modal -->
     <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -588,11 +821,13 @@
         </div>
     </div>
 
-    <!-- Scripts (Firebase Removed) -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let selectedFrame = '';
         let selectedFrameStyle = '';
+        let gradientStart = '#ff6f91';
+        let gradientEnd = '#ffd700';
         let currentEffect = 'none';
         let selectedLayout = 'vertical';
         let selectedBackgroundType = null;
@@ -798,6 +1033,96 @@
                     ctx.font = '20px Arial';
                     ctx.fillText('🐾', x + 10, y + 20);
                     ctx.fillText('🐾', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'pusheen') {
+                    ctx.strokeStyle = '#ffb6c1';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🐱', x + 10, y + 20);
+                    ctx.fillText('🍔', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'rainbow') {
+                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    gradient.addColorStop(0, '#ff6f61');
+                    gradient.addColorStop(0.33, '#ffd700');
+                    gradient.addColorStop(0.66, '#ff69b4');
+                    gradient.addColorStop(1, '#87ceeb');
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                } else if (selectedFrameStyle === 'diamonds') {
+                    ctx.strokeStyle = '#ff6f91';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff6f91';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('♦', x + 10, y + 20);
+                    ctx.fillText('♦', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'moon') {
+                    ctx.strokeStyle = '#87ceeb';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#87ceeb';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🌙', x + 10, y + 20);
+                    ctx.fillText('✨', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'cherries') {
+                    ctx.strokeStyle = '#ff6f61';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ff6f61';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🍒', x + 10, y + 20);
+                    ctx.fillText('🍒', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'glitter') {
+                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    gradient.addColorStop(0, '#ff6f91');
+                    gradient.addColorStop(1, '#ffd700');
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                } else if (selectedFrameStyle === 'pawprints') {
+                    ctx.strokeStyle = '#da70d6';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#da70d6';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🐾', x + 10, y + 20);
+                    ctx.fillText('🐾', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'candy') {
+                    ctx.strokeStyle = '#ffc0cb';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ffc0cb';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🍬', x + 10, y + 20);
+                    ctx.fillText('🍭', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'butterflies') {
+                    ctx.strokeStyle = '#ffa07a';
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                    ctx.fillStyle = '#ffa07a';
+                    ctx.font = '20px Arial';
+                    ctx.fillText('🦋', x + 10, y + 20);
+                    ctx.fillText('🦋', x + width - 20, y + height - 10);
+                } else if (selectedFrameStyle === 'galaxy') {
+                    const gradient = ctx.createRadialGradient(x + width / 2, y + height / 2, 0, x + width / 2, y + height / 2, width / 2);
+                    gradient.addColorStop(0, '#2b1055');
+                    gradient.addColorStop(1, '#7597de');
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                } else if (selectedFrameStyle === 'gradient') {
+                    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+                    gradient.addColorStop(0, gradientStart);
+                    gradient.addColorStop(1, gradientEnd);
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
+                } else if (selectedFrameStyle === 'solid') {
+                    ctx.strokeStyle = selectedFrame;
+                    ctx.lineWidth = frameThickness * 2;
+                    ctx.strokeRect(x + frameThickness, y + frameThickness, width - frameThickness * 2, height - frameThickness * 2);
                 } else {
                     ctx.strokeStyle = selectedFrame;
                     ctx.lineWidth = frameThickness * 2;
@@ -812,7 +1137,19 @@
             selectedFrameStyle = style;
             const frames = document.querySelectorAll('.frame');
             frames.forEach(frame => frame.classList.remove('selected'));
-            event.target.classList.add('selected');
+            if (style !== 'solid' && style !== 'gradient') {
+                event.target.classList.add('selected');
+            }
+            updateFrames();
+        }
+
+        function selectGradientFrame() {
+            gradientStart = document.getElementById('gradient-start').value;
+            gradientEnd = document.getElementById('gradient-end').value;
+            selectedFrame = `linear-gradient(90deg, ${gradientStart}, ${gradientEnd})`;
+            selectedFrameStyle = 'gradient';
+            const frames = document.querySelectorAll('.frame');
+            frames.forEach(frame => frame.classList.remove('selected'));
             updateFrames();
         }
 
@@ -979,6 +1316,11 @@
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
+            // Get custom watermark text
+            const customWatermark = document.getElementById('watermark-input').value || '';
+            const fixedURL = 'https://www.hidecard.info/photobooth/';
+            const watermarkText = `${customWatermark} ${fixedURL}`.trim();
+
             if (selectedLayout === 'vertical') {
                 canvas.width = imgWidth + (frameThickness * 2);
                 canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
@@ -1001,7 +1343,7 @@
 
                             if (index === images.length - 1 && selectedFrame) {
                                 ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
                                 ctx.beginPath();
                                 ctx.moveTo(0, 0);
                                 ctx.lineTo(canvas.width, 0);
@@ -1020,8 +1362,6 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
-                                const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
                                 ctx.font = `12px Arial`;
                                 ctx.textAlign = 'center';
@@ -1068,7 +1408,7 @@
 
                             if (index === images.length - 1 && selectedFrame) {
                                 ctx.lineWidth = frameThickness * 2;
-                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
                                 ctx.strokeRect(0, 0, canvas.width, canvas.height - bottomFrameThickness);
                                 ctx.lineWidth = bottomFrameThickness * 2;
                                 ctx.beginPath();
@@ -1076,8 +1416,6 @@
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
-                                const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
                                 ctx.font = `12px Arial`;
                                 ctx.textAlign = 'center';
@@ -1132,14 +1470,12 @@
 
                             if (index === images.length - 1 && selectedFrame) {
                                 ctx.lineWidth = bottomFrameThickness * 2;
-                                ctx.strokeStyle = selectedFrameStyle ? '#ff6f91' : selectedFrame;
+                                ctx.strokeStyle = selectedFrameStyle === 'gradient' ? '#ff6f91' : (selectedFrameStyle ? '#ff6f91' : selectedFrame);
                                 ctx.beginPath();
                                 ctx.moveTo(0, canvas.height);
                                 ctx.lineTo(canvas.width, canvas.height);
                                 ctx.stroke();
 
-                                const dateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Yangon' });
-                                const watermarkText = `PhotoBooth ${dateTime}`;
                                 ctx.fillStyle = 'white';
                                 ctx.font = `12px Arial`;
                                 ctx.textAlign = 'center';
