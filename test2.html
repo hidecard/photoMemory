@@ -1311,7 +1311,7 @@
             const imgWidth = 200;
             const imgHeight = 200;
             const frameThickness = 5;
-            const bottomFrameThickness = 60; // Already adjusted for spacing
+            const bottomFrameThickness = 60; // Increased from 50 to 60 for more space
         
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -1324,10 +1324,6 @@
             if (selectedLayout === 'vertical') {
                 canvas.width = imgWidth + (frameThickness * 2);
                 canvas.height = (imgHeight * images.length) + (frameThickness * (images.length + 1)) + bottomFrameThickness;
-        
-                // Fill canvas background with #fce7f3 to avoid black lines
-                ctx.fillStyle = '#fce7f3';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
         
                 let y = frameThickness;
                 const imageObjects = images.map(src => {
@@ -1374,16 +1370,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                             y += imgHeight + frameThickness;
                         });
@@ -1398,10 +1394,6 @@
             } else if (selectedLayout === 'grid') {
                 canvas.width = (imgWidth * 2) + (frameThickness * 3);
                 canvas.height = (imgHeight * 2) + (frameThickness * 3) + bottomFrameThickness;
-        
-                // Fill canvas background with #fce7f3 to avoid black lines
-                ctx.fillStyle = '#fce7f3';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
         
                 const imageObjects = images.map(src => {
                     const image = new Image();
@@ -1444,16 +1436,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                         });
         
@@ -1468,7 +1460,6 @@
                 canvas.width = imgWidth + (frameThickness * 4) + 40;
                 canvas.height = imgHeight + bottomFrameThickness + 480;
         
-                // Fill canvas with selected background or default #fce7f3 (already handled)
                 if (selectedBackgroundType === 'solid') {
                     ctx.fillStyle = selectedBackgroundValue;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1517,16 +1508,16 @@
                                 // Custom Watermark (top)
                                 if (customWatermark) {
                                     ctx.font = '15px Arial';
-                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40);
+                                    ctx.fillText(customWatermark, canvas.width / 2, canvas.height - 40); // Changed from -35 to -40
                                 }
         
                                 // Date and Time (middle)
                                 ctx.font = '10px Arial';
-                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25);
+                                ctx.fillText(currentDateTime, canvas.width / 2, canvas.height - 25); // Changed from -20 to -25
         
                                 // Fixed URL (bottom)
                                 ctx.font = '8px Arial';
-                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10);
+                                ctx.fillText(fixedURL, canvas.width / 2, canvas.height - 10); // Changed from -5 to -10
                             }
                             y += 160;
                         });
